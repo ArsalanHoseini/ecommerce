@@ -9,7 +9,7 @@ const users = [
     id: "JAN-158",
     name: "مارسیا بیکر",
     email: "marcia@trezo.com",
-    location: "واشنگتن دی.سی",
+    location: "",
     phone: "+1 555-445-4455",
     projects: 6,
     joinDate: "01 دسامبر 2024",
@@ -340,13 +340,10 @@ const UsersListTable: React.FC = () => {
                   ایمیل
                 </th>
                 <th className="px-[20px] py-[11px] bg-primary-50 dark:bg-[#15203c]">
-                  مکان
-                </th>
-                <th className="px-[20px] py-[11px] bg-primary-50 dark:bg-[#15203c]">
                   تلفن
                 </th>
                 <th className="px-[20px] py-[11px] bg-primary-50 dark:bg-[#15203c]">
-                  پروژه‌ها
+                  سفارشات
                 </th>
                 <th className="px-[20px] py-[11px] bg-primary-50 dark:bg-[#15203c]">
                   تاریخ عضویت
@@ -383,9 +380,6 @@ const UsersListTable: React.FC = () => {
                     {user.email}
                   </td>
                   <td className="px-[20px] py-[17px] border-b border-gray-100 dark:border-[#172036]">
-                    {user.location}
-                  </td>
-                  <td className="px-[20px] py-[17px] border-b border-gray-100 dark:border-[#172036]">
                     {user.phone}
                   </td>
                   <td className="px-[20px] py-[17px] border-b border-gray-100 dark:border-[#172036]">
@@ -396,14 +390,14 @@ const UsersListTable: React.FC = () => {
                   </td>
                   <td className="px-[20px] py-[17px] border-b border-gray-100 dark:border-[#172036]">
                     <div className="flex items-center gap-[9px]">
-                      <Link href={`/users/view/${user.id}`}>
+                      <Link href={`/admin/users/view/${user.id}`}>
                         <button className="text-primary-500">
                           <i className="material-symbols-outlined !text-md">
                             visibility
                           </i>
                         </button>
                       </Link>
-                      <Link href={`/users/edit/${user.id}`}>
+                      <Link href={`/admin/users/edit/${user.id}`}>
                         <button className="text-gray-500 dark:text-gray-400">
                           <i className="material-symbols-outlined !text-md">
                             edit
