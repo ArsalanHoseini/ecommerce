@@ -3,8 +3,9 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import OrderStatusModalButton from "./OrderStatusModalButton";
 
-// Define the Order type
+// تعریف نوع سفارش
 type Order = {
   orderId: string;
   customer: string;
@@ -18,222 +19,232 @@ type Order = {
 };
 
 const OrdersTable: React.FC = () => {
-  // Initialize state for orders
+  // مقداردهی اولیه سفارش‌ها
   const [orders, setOrders] = useState<Order[]>([
     {
       orderId: "#JAN-2345",
-      customer: "Sarah Johnson",
+      customer: "سارا جانسون",
       customerImage: "/images/users/user1.jpg",
       items: 120,
-      created: "12 Jun 2024",
-      total: "$10,490",
-      vendor: "Dennis Matthews",
-      status: "Shipped",
-      viewLink: "/ecommerce/order-details/",
+      created: "۱۲ ژوئن ۲۰۲۴",
+      total: "۱۰,۴۹۰ دلار",
+      vendor: "دنیس متیوز",
+      status: "ارسال شد",
+      viewLink: "/admin/ecommerce/order-details/",
     },
     {
       orderId: "#JAN-1323",
-      customer: "Michael Smith",
+      customer: "مایکل اسمیت",
       customerImage: "/images/users/user2.jpg",
       items: 62,
-      created: "11 Jun 2024",
-      total: "$6,575",
-      vendor: "Kathryn Turner",
-      status: "Confirmed",
-      viewLink: "/ecommerce/order-details/",
+      created: "۱۱ ژوئن ۲۰۲۴",
+      total: "۶,۵۷۵ دلار",
+      vendor: "کاترین ترنر",
+      status: "تایید شد",
+      viewLink: "/admin/ecommerce/order-details/",
     },
     {
       orderId: "#DEC-1234",
-      customer: "Emily Brown",
+      customer: "امیلی براون",
       customerImage: "/images/users/user3.jpg",
       items: 49,
-      created: "10 Jun 2024",
-      total: "$12,870",
-      vendor: "John Valdez",
-      status: "Pending",
-      viewLink: "/ecommerce/order-details/",
+      created: "۱۰ ژوئن ۲۰۲۴",
+      total: "۱۲,۸۷۰ دلار",
+      vendor: "جان والدز",
+      status: "در انتظار",
+      viewLink: "/admin/ecommerce/order-details/",
     },
     {
       orderId: "#DEC-1098",
-      customer: "Ashley Davis",
+      customer: "اشلی دیویس",
       customerImage: "/images/users/user5.jpg",
       items: 82,
-      created: "08 Jun 2024",
-      total: "$4,680",
-      vendor: "Susan Rader",
-      status: "Rejected",
-      viewLink: "/ecommerce/order-details/",
+      created: "۰۸ ژوئن ۲۰۲۴",
+      total: "۴,۶۸۰ دلار",
+      vendor: "سوزان رادر",
+      status: "رد شد",
+      viewLink: "/admin/ecommerce/order-details/",
     },
     {
       orderId: "#JAN-2346",
-      customer: "John Doe",
+      customer: "جان دو",
       customerImage: "/images/users/user4.jpg",
       items: 25,
-      created: "07 Jun 2024",
-      total: "$3,250",
-      vendor: "George Williams",
-      status: "Shipped",
-      viewLink: "/ecommerce/order-details/",
+      created: "۰۷ ژوئن ۲۰۲۴",
+      total: "۳,۲۵۰ دلار",
+      vendor: "جرج ویلیامز",
+      status: "ارسال شد",
+      viewLink: "/admin/ecommerce/order-details/",
     },
     {
       orderId: "#JAN-2347",
-      customer: "Jessica Adams",
+      customer: "جسیکا آدامز",
       customerImage: "/images/users/user6.jpg",
       items: 75,
-      created: "06 Jun 2024",
-      total: "$5,300",
-      vendor: "Daniel Cook",
-      status: "Confirmed",
-      viewLink: "/ecommerce/order-details/",
+      created: "۰۶ ژوئن ۲۰۲۴",
+      total: "۵,۳۰۰ دلار",
+      vendor: "دنیل کوک",
+      status: "تایید شد",
+      viewLink: "/admin/ecommerce/order-details/",
     },
     {
       orderId: "#JAN-2348",
-      customer: "Olivia Martin",
+      customer: "اولیویا مارتین",
       customerImage: "/images/users/user7.jpg",
       items: 90,
-      created: "05 Jun 2024",
-      total: "$8,240",
-      vendor: "Michael White",
-      status: "Pending",
-      viewLink: "/ecommerce/order-details/",
+      created: "۰۵ ژوئن ۲۰۲۴",
+      total: "۸,۲۴۰ دلار",
+      vendor: "مایکل وایت",
+      status: "در انتظار",
+      viewLink: "/admin/ecommerce/order-details/",
     },
     {
       orderId: "#JAN-2349",
-      customer: "Ethan Lee",
+      customer: "اتان لی",
       customerImage: "/images/users/user8.jpg",
       items: 150,
-      created: "04 Jun 2024",
-      total: "$15,500",
-      vendor: "Paul Green",
-      status: "Shipped",
-      viewLink: "/ecommerce/order-details/",
+      created: "۰۴ ژوئن ۲۰۲۴",
+      total: "۱۵,۵۰۰ دلار",
+      vendor: "پال گرین",
+      status: "ارسال شد",
+      viewLink: "/admin/ecommerce/order-details/",
     },
     {
       orderId: "#JAN-2350",
-      customer: "Sophia Turner",
+      customer: "سوفیا ترنر",
       customerImage: "/images/users/user9.jpg",
       items: 60,
-      created: "03 Jun 2024",
-      total: "$6,000",
-      vendor: "Alice Harris",
-      status: "Confirmed",
-      viewLink: "/ecommerce/order-details/",
+      created: "۰۳ ژوئن ۲۰۲۴",
+      total: "۶,۰۰۰ دلار",
+      vendor: "آلیس هریس",
+      status: "تایید شد",
+      viewLink: "/admin/ecommerce/order-details/",
     },
     {
       orderId: "#JAN-2351",
-      customer: "Liam Jackson",
+      customer: "لیام جکسون",
       customerImage: "/images/users/user10.jpg",
       items: 80,
-      created: "02 Jun 2024",
-      total: "$7,120",
-      vendor: "Robert Clark",
-      status: "Pending",
-      viewLink: "/ecommerce/order-details/",
+      created: "۰۲ ژوئن ۲۰۲۴",
+      total: "۷,۱۲۰ دلار",
+      vendor: "رابرت کلارک",
+      status: "در انتظار",
+      viewLink: "/admin/ecommerce/order-details/",
     },
     {
       orderId: "#JAN-2352",
-      customer: "Ava Walker",
+      customer: "آوا واکر",
       customerImage: "/images/users/user11.jpg",
       items: 110,
-      created: "01 Jun 2024",
-      total: "$9,800",
-      vendor: "Steven Lewis",
-      status: "Shipped",
-      viewLink: "/ecommerce/order-details/",
+      created: "۰۱ ژوئن ۲۰۲۴",
+      total: "۹,۸۰۰ دلار",
+      vendor: "استیون لوئیس",
+      status: "ارسال شد",
+      viewLink: "/admin/ecommerce/order-details/",
     },
     {
       orderId: "#JAN-2353",
-      customer: "Isabella Hall",
+      customer: "ایزابلا هال",
       customerImage: "/images/users/user12.jpg",
       items: 35,
-      created: "31 May 2024",
-      total: "$2,850",
-      vendor: "William Nelson",
-      status: "Confirmed",
-      viewLink: "/ecommerce/order-details/",
+      created: "۳۱ مه ۲۰۲۴",
+      total: "۲,۸۵۰ دلار",
+      vendor: "ویلیام نلسون",
+      status: "تایید شد",
+      viewLink: "/admin/ecommerce/order-details/",
     },
     {
       orderId: "#JAN-2354",
-      customer: "Lucas Young",
+      customer: "لوکاس یانگ",
       customerImage: "/images/users/user13.jpg",
       items: 140,
-      created: "30 May 2024",
-      total: "$12,300",
-      vendor: "David King",
-      status: "Pending",
-      viewLink: "/ecommerce/order-details/",
+      created: "۳۰ مه ۲۰۲۴",
+      total: "۱۲,۳۰۰ دلار",
+      vendor: "دیوید کینگ",
+      status: "در انتظار",
+      viewLink: "/admin/ecommerce/order-details/",
     },
     {
       orderId: "#JAN-2355",
-      customer: "Mason Scott",
+      customer: "میسون اسکات",
       customerImage: "/images/users/user14.jpg",
       items: 200,
-      created: "29 May 2024",
-      total: "$19,500",
-      vendor: "Thomas Adams",
-      status: "Shipped",
-      viewLink: "/ecommerce/order-details/",
+      created: "۲۹ مه ۲۰۲۴",
+      total: "۱۹,۵۰۰ دلار",
+      vendor: "توماس آدامز",
+      status: "ارسال شد",
+      viewLink: "/admin/ecommerce/order-details/",
     },
     {
       orderId: "#JAN-2356",
-      customer: "Charlotte Perez",
+      customer: "شارلوت پرز",
       customerImage: "/images/users/user15.jpg",
       items: 160,
-      created: "28 May 2024",
-      total: "$14,800",
-      vendor: "Mary Moore",
-      status: "Confirmed",
-      viewLink: "/ecommerce/order-details/",
+      created: "۲۸ مه ۲۰۲۴",
+      total: "۱۴,۸۰۰ دلار",
+      vendor: "مری مور",
+      status: "تایید شد",
+      viewLink: "/admin/ecommerce/order-details/",
     },
   ]);
 
-  // State for search query and filtered orders
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [statusFilter, setStatusFilter] = useState<string>("همه"); // فیلتر وضعیت
   const [filteredOrders, setFilteredOrders] = useState<Order[]>(orders);
 
-  // State for pagination
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const itemsPerPage = 10; // Number of orders per page
+  const itemsPerPage = 10;
 
-  // Filter orders based on search query
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const query = e.target.value.toLowerCase();
-    setSearchQuery(query);
-
-    const filtered = orders.filter(
+  // تابع جستجو و فیلتر
+  const handleFilter = (query: string, status: string) => {
+    let filtered = orders.filter(
       (order) =>
         order.orderId.toLowerCase().includes(query) ||
         order.customer.toLowerCase().includes(query) ||
         order.vendor.toLowerCase().includes(query)
     );
+
+    if (status !== "همه") {
+      filtered = filtered.filter((order) => order.status === status);
+    }
+
     setFilteredOrders(filtered);
-    setCurrentPage(1); // Reset to the first page when search is changed
+    setCurrentPage(1);
   };
 
-  // Handle pagination logic
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value.toLowerCase();
+    setSearchQuery(query);
+    handleFilter(query, statusFilter);
+  };
+
+  const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const status = e.target.value;
+    setStatusFilter(status);
+    handleFilter(searchQuery, status);
+  };
+
   const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
-
-  // Get orders for the current page
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentOrders = filteredOrders.slice(
     startIndex,
     startIndex + itemsPerPage
   );
 
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
   const handleDelete = (orderId: string) => {
     const updatedOrders = orders.filter((order) => order.orderId !== orderId);
     setOrders(updatedOrders);
-    setFilteredOrders(updatedOrders); // Update filtered orders as well if the search filter is active
+    handleFilter(searchQuery, statusFilter);
   };
 
   return (
     <>
       <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-        <div className="trezo-card-header mb-[20px] md:mb-[25px] sm:flex items-center justify-between">
+        <div className="trezo-card-header mb-[20px] md:mb-[25px] sm:flex items-center justify-between gap-[10px]">
           <div className="trezo-card-title">
             <form className="relative sm:w-[265px]">
               <label className="leading-none absolute ltr:left-[13px] rtl:right-[13px] text-black dark:text-white mt-px top-1/2 -translate-y-1/2">
@@ -241,57 +252,57 @@ const OrdersTable: React.FC = () => {
               </label>
               <input
                 type="text"
-                placeholder="Search order here..."
+                placeholder="جستجوی سفارش..."
                 value={searchQuery}
                 onChange={handleSearchChange}
-                className="bg-gray-50 border border-gray-50 h-[36px] text-xs rounded-md w-full block text-black pt-[11px] pb-[12px] ltr:pl-[38px] rtl:pr-[38px] ltr:pr-[13px] ltr:md:pr-[16px] rtl:pl-[13px] rtl:md:pl-[16px] placeholder:text-gray-500 outline-0 dark:bg-[#15203c] dark:text-white dark:border-[#15203c] dark:placeholder:text-gray-400"
+                className="bg-gray-50 border border-gray-50 h-[36px] text-xs rounded-md w-full block text-black pt-[11px] pb-[12px] ltr:pl-[38px] rtl:pr-[38px] ltr:pr-[13px] rtl:pl-[13px] placeholder:text-gray-500 outline-0 dark:bg-[#15203c] dark:text-white dark:border-[#15203c] dark:placeholder:text-gray-400"
               />
             </form>
           </div>
 
-          <div className="trezo-card-subtitle mt-[15px] sm:mt-0">
-            <Link
-              href="/ecommerce/create-order/"
-              className="inline-block transition-all rounded-md font-medium px-[13px] py-[6px] text-primary-500 border border-primary-500 hover:bg-primary-500 hover:text-white"
-            >
-              <span className="inline-block relative ltr:pl-[22px] rtl:pr-[22px]">
-                <i className="material-symbols-outlined !text-[22px] absolute ltr:-left-[4px] rtl:-right-[4px] top-1/2 -translate-y-1/2">
-                  add
-                </i>
-                Add New Order
-              </span>
-            </Link>
-          </div>
+          {/* فیلتر وضعیت اضافه شد */}
+          <select
+            value={statusFilter}
+            onChange={handleStatusChange}
+            className="h-[36px] rounded-md border border-gray-200 dark:bg-[#15203c] dark:text-white dark:border-[#172036] px-[10px]"
+          >
+            <option value="همه">همه وضعیت‌ها</option>
+            <option value="ارسال شد">ارسال شد</option>
+            <option value="تایید شد">تایید شد</option>
+            <option value="در انتظار">در انتظار</option>
+            <option value="رد شد">رد شد</option>
+          </select>
         </div>
 
+        {/* جدول سفارش‌ها */}
         <div className="trezo-card-content">
           <div className="table-responsive overflow-x-auto">
-            <table className="w-full">
+            <table className="w-full table-fixed border-collapse">
               <thead className="text-black dark:text-white">
                 <tr>
-                  <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap first:rounded-tl-md">
-                    Order ID
+                  <th className="w-[120px] font-medium px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] text-right whitespace-nowrap first:rounded-tl-md">
+                    شناسه سفارش
                   </th>
-                  <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap first:rounded-tl-md">
-                    Customer
+                  <th className="w-[180px] font-medium px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] text-right whitespace-nowrap">
+                    مشتری
                   </th>
-                  <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap first:rounded-tl-md">
-                    Items
+                  <th className="w-[110px] font-medium px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] text-right whitespace-nowrap">
+                    تعداد کالا
                   </th>
-                  <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap first:rounded-tl-md">
-                    Created
+                  <th className="w-[130px] font-medium px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] text-right whitespace-nowrap">
+                    تاریخ ثبت
                   </th>
-                  <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap first:rounded-tl-md">
-                    Total
+                  <th className="w-[130px] font-medium px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] text-right whitespace-nowrap">
+                    مبلغ کل
                   </th>
-                  <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap first:rounded-tl-md">
-                    Vendor
+                  <th className="w-[150px] font-medium px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] text-right whitespace-nowrap">
+                    فروشنده
                   </th>
-                  <th className="font-medium text-left px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap first:rounded-tr-md">
-                    Status
+                  <th className="w-[120px] font-medium px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] text-right whitespace-nowrap">
+                    وضعیت
                   </th>
-                  <th className="font-medium text-left px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap first:rounded-tr-md">
-                    Action
+                  <th className="w-[110px] font-medium px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] text-center whitespace-nowrap">
+                    عملیات
                   </th>
                 </tr>
               </thead>
@@ -299,19 +310,19 @@ const OrdersTable: React.FC = () => {
               <tbody className="text-black dark:text-white">
                 {currentOrders.map((order, index) => (
                   <tr key={index}>
-                    <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
+                    <td className="px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] text-right">
                       {order.orderId}
                     </td>
 
-                    <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
+                    <td className="px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] text-right">
                       <div className="flex items-center">
-                        <div className="rounded-md w-[40px]">
+                        <div className="w-[40px] h-[40px] rounded-md overflow-hidden">
                           <Image
                             src={order.customerImage}
-                            className="inline-block rounded-md"
-                            alt="product-image"
+                            alt="تصویر مشتری"
                             width={40}
                             height={40}
+                            className="object-cover"
                           />
                         </div>
                         <div className="ltr:ml-[12px] rtl:mr-[12px]">
@@ -322,66 +333,60 @@ const OrdersTable: React.FC = () => {
                       </div>
                     </td>
 
-                    <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
+                    <td className="px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] text-right">
                       {order.items}
                     </td>
 
-                    <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
+                    <td className="px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] text-right">
                       {order.created}
                     </td>
 
-                    <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
+                    <td className="px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] text-right">
                       {order.total}
                     </td>
 
-                    <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
+                    <td className="px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] text-right">
                       {order.vendor}
                     </td>
 
-                    <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
+                    <td className="px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] text-right">
                       <span
-                        className={`px-[8px] py-[3px] inline-block dark:bg-[#15203c] rounded-sm font-medium text-xs ${
-                          order.status === "Shipped"
+                        className={`px-[8px] py-[3px] inline-block rounded-sm font-medium text-xs dark:bg-[#15203c] ${
+                          order.status === "ارسال شد"
                             ? "bg-success-100 text-success-600"
-                            : order.status === "Confirmed"
+                            : order.status === "تایید شد"
                             ? "bg-primary-50 text-primary-500"
-                            : order.status === "Pending"
+                            : order.status === "در انتظار"
                             ? "bg-warning-50 text-warning-500"
                             : "bg-danger-100 text-danger-500"
-                        } rounded-sm font-medium text-xs`}
+                        }`}
                       >
                         {order.status}
                       </span>
                     </td>
 
-                    <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
-                      <div className="flex items-center gap-[9px]">
+                    <td className="px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] text-center">
+                      <div className="flex items-center justify-center gap-2">
                         <Link
                           href={order.viewLink}
-                          className="text-primary-500 leading-none custom-tooltip"
+                          className="flex items-center justify-center w-10 h-10 rounded-full text-primary-500 hover:bg-primary-50 dark:hover:bg-zinc-800 transition"
+                          title="مشاهده سفارش"
                         >
-                          <i className="material-symbols-outlined !text-md">
+                          <i className="material-symbols-outlined text-[22px] leading-none">
                             visibility
                           </i>
                         </Link>
 
                         <button
                           type="button"
-                          className="text-gray-500 dark:text-gray-400 leading-none custom-tooltip"
+                          className="flex items-center justify-center w-10 h-10 rounded-full text-primary-500 hover:bg-primary-50 dark:hover:bg-zinc-800 transition"
+                          title="تغییر وضعیت سفارش"
                         >
-                          <i className="material-symbols-outlined !text-md">
-                            edit
-                          </i>
-                        </button>
-
-                        <button
-                          type="button"
-                          className="text-danger-500 leading-none custom-tooltip"
-                          onClick={() => handleDelete(order.orderId)}
-                        >
-                          <i className="material-symbols-outlined !text-md">
-                            delete
-                          </i>
+                          <OrderStatusModalButton
+                            orderId={order.orderId}
+                            initialStatus={order.status}
+                            onStatusUpdated={() => {}}
+                          />
                         </button>
                       </div>
                     </td>
@@ -391,10 +396,11 @@ const OrdersTable: React.FC = () => {
             </table>
           </div>
 
+          {/* صفحه‌بندی */}
           <div className="px-[20px] py-[12px] md:py-[14px] rounded-b-md border-l border-r border-b border-gray-100 dark:border-[#172036] sm:flex sm:items-center justify-between">
             <p className="!mb-0 !text-sm">
-              Showing {startIndex + 1} to {startIndex + currentOrders.length} of{" "}
-              {filteredOrders.length} results
+              نمایش {startIndex + 1} تا {startIndex + currentOrders.length} از
+              مجموع {filteredOrders.length} سفارش
             </p>
 
             <ol className="mt-[10px] sm:mt-0">
@@ -406,7 +412,7 @@ const OrdersTable: React.FC = () => {
                 >
                   <span className="opacity-0">0</span>
                   <i className="material-symbols-outlined left-0 right-0 absolute top-1/2 -translate-y-1/2">
-                    chevron_left
+                    chevron_right
                   </i>
                 </button>
               </li>
@@ -437,7 +443,7 @@ const OrdersTable: React.FC = () => {
                 >
                   <span className="opacity-0">0</span>
                   <i className="material-symbols-outlined left-0 right-0 absolute top-1/2 -translate-y-1/2">
-                    chevron_right
+                    chevron_left
                   </i>
                 </button>
               </li>

@@ -3,14 +3,14 @@
 import React, { useState, useEffect } from "react";
 
 const RTLMode: React.FC = () => {
-  const [dirAttribute, setDirAttribute] = useState<string>("ltr");
+  // 🔹 حالت پیش‌فرض: rtl
+  const [dirAttribute, setDirAttribute] = useState<string>("rtl");
 
   useEffect(() => {
     const storedDirAttribute = localStorage.getItem("dirAttribute");
-    if (storedDirAttribute) {
-      setDirAttribute(storedDirAttribute);
-      document.documentElement.setAttribute("dir", storedDirAttribute);
-    }
+    const initialDir = storedDirAttribute || "rtl"; // اگر چیزی ذخیره نشده بود، rtl باشد
+    setDirAttribute(initialDir);
+    document.documentElement.setAttribute("dir", initialDir);
   }, []);
 
   const handleButtonClick = () => {
@@ -21,20 +21,25 @@ const RTLMode: React.FC = () => {
   };
 
   return (
-    <>
-      <button
-        type="button"
-        className={`rtl-mode-toggle flex items-center text-black dark:text-white font-medium ${
-          dirAttribute === "rtl" ? "open" : ""
+    <button
+      type="button"
+      onClick={handleButtonClick}
+      className={`rtl-mode-toggle flex items-center text-black dark:text-white font-medium gap-2`}
+    >
+      <span>{dirAttribute === "rtl" ? "RTL Mode" : "LTR Mode"}</span>
+
+      <span
+        className={`relative rounded-full w-[40px] h-[22px] bg-gray-200 dark:bg-[#1c2233] transition-colors duration-300 ${
+          dirAttribute === "rtl" ? "bg-blue-500" : "bg-gray-300"
         }`}
-        onClick={handleButtonClick}
       >
-        LTR Mode:
-        <span className="inline-block relative rounded-full w-[35px] h-[20px] bg-gray-50 dark:bg-[#0a0e19] ltr:ml-[10px] rtl:mr-[10px]">
-          <span className="inline-block transition-all absolute h-[12px] w-[12px] bg-[#080808] dark:bg-white rounded-full top-1/2 -translate-y-1/2"></span>
-        </span>
-      </button>
-    </>
+        <span
+          className={`absolute top-1/2 -translate-y-1/2 h-[16px] w-[16px] rounded-full bg-white shadow-md transition-all duration-300 ${
+            dirAttribute === "rtl" ? "right-[3px]" : "left-[3px]"
+          }`}
+        ></span>
+      </span>
+    </button>
   );
 };
 

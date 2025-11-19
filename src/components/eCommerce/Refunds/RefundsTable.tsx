@@ -18,9 +18,9 @@ interface Refund {
 const initialRefunds: Refund[] = [
   {
     id: "#999",
-    customer: "Oliver Khan",
+    customer: "اولیویر خان",
     avatar: "/images/users/user6.jpg",
-    date: "19 Jun 2024",
+    date: "۱۹ ژوئن ۲۰۲۴",
     orderReturned: 2,
     orderRefunded: 1,
     orderReplaced: 0,
@@ -29,9 +29,9 @@ const initialRefunds: Refund[] = [
   },
   {
     id: "#998",
-    customer: "Marcia Baker",
+    customer: "مارسیا بیکر",
     avatar: "/images/users/user7.jpg",
-    date: "19 Jun 2024",
+    date: "۱۹ ژوئن ۲۰۲۴",
     orderReturned: 1,
     orderRefunded: 1,
     orderReplaced: 0,
@@ -40,9 +40,9 @@ const initialRefunds: Refund[] = [
   },
   {
     id: "#997",
-    customer: "Carolyn Barnes",
+    customer: "کارولین بارنز",
     avatar: "/images/users/user8.jpg",
-    date: "18 Jun 2024",
+    date: "۱۸ ژوئن ۲۰۲۴",
     orderReturned: 2,
     orderRefunded: 7,
     orderReplaced: 4,
@@ -51,9 +51,9 @@ const initialRefunds: Refund[] = [
   },
   {
     id: "#996",
-    customer: "Donna Miller",
+    customer: "دونا میلر",
     avatar: "/images/users/user9.jpg",
-    date: "17 Jun 2024",
+    date: "۱۷ ژوئن ۲۰۲۴",
     orderReturned: 3,
     orderRefunded: 1,
     orderReplaced: 2,
@@ -62,9 +62,9 @@ const initialRefunds: Refund[] = [
   },
   {
     id: "#995",
-    customer: "Barbara Cross",
+    customer: "باربارا کراس",
     avatar: "/images/users/user10.jpg",
-    date: "17 Jun 2024",
+    date: "۱۷ ژوئن ۲۰۲۴",
     orderReturned: 5,
     orderRefunded: 2,
     orderReplaced: 7,
@@ -73,9 +73,9 @@ const initialRefunds: Refund[] = [
   },
   {
     id: "#994",
-    customer: "Rebecca Block",
+    customer: "ربکا بلاک",
     avatar: "/images/users/user11.jpg",
-    date: "16 Jun 2024",
+    date: "۱۶ ژوئن ۲۰۲۴",
     orderReturned: 5,
     orderRefunded: 6,
     orderReplaced: 2,
@@ -84,9 +84,9 @@ const initialRefunds: Refund[] = [
   },
   {
     id: "#993",
-    customer: "James Turner",
+    customer: "جیمز ترنر",
     avatar: "/images/users/user12.jpg",
-    date: "15 Jun 2024",
+    date: "۱۵ ژوئن ۲۰۲۴",
     orderReturned: 2,
     orderRefunded: 3,
     orderReplaced: 1,
@@ -95,9 +95,9 @@ const initialRefunds: Refund[] = [
   },
   {
     id: "#992",
-    customer: "Sophia Martin",
+    customer: "سوفیا مارتین",
     avatar: "/images/users/user13.jpg",
-    date: "14 Jun 2024",
+    date: "۱۴ ژوئن ۲۰۲۴",
     orderReturned: 6,
     orderRefunded: 4,
     orderReplaced: 3,
@@ -106,9 +106,9 @@ const initialRefunds: Refund[] = [
   },
   {
     id: "#991",
-    customer: "Emma Collins",
+    customer: "اما کالینز",
     avatar: "/images/users/user14.jpg",
-    date: "13 Jun 2024",
+    date: "۱۳ ژوئن ۲۰۲۴",
     orderReturned: 2,
     orderRefunded: 1,
     orderReplaced: 0,
@@ -117,9 +117,9 @@ const initialRefunds: Refund[] = [
   },
   {
     id: "#990",
-    customer: "Benjamin Scott",
+    customer: "بنجامین اسکات",
     avatar: "/images/users/user15.jpg",
-    date: "12 Jun 2024",
+    date: "۱۲ ژوئن ۲۰۲۴",
     orderReturned: 4,
     orderRefunded: 2,
     orderReplaced: 1,
@@ -128,9 +128,9 @@ const initialRefunds: Refund[] = [
   },
   {
     id: "#989",
-    customer: "Isabella Chang",
+    customer: "ایزابلا چانگ",
     avatar: "/images/users/user16.jpg",
-    date: "11 Jun 2024",
+    date: "۱۱ ژوئن ۲۰۲۴",
     orderReturned: 3,
     orderRefunded: 1,
     orderReplaced: 2,
@@ -139,9 +139,9 @@ const initialRefunds: Refund[] = [
   },
   {
     id: "#988",
-    customer: "Lucas Thompson",
+    customer: "لوکاس تامپسون",
     avatar: "/images/users/user17.jpg",
-    date: "10 Jun 2024",
+    date: "۱۰ ژوئن ۲۰۲۴",
     orderReturned: 1,
     orderRefunded: 0,
     orderReplaced: 1,
@@ -150,9 +150,9 @@ const initialRefunds: Refund[] = [
   },
   {
     id: "#987",
-    customer: "Eleanor Foster",
+    customer: "النور فاستر",
     avatar: "/images/users/user18.jpg",
-    date: "09 Jun 2024",
+    date: "۰۹ ژوئن ۲۰۲۴",
     orderReturned: 2,
     orderRefunded: 2,
     orderReplaced: 1,
@@ -161,9 +161,9 @@ const initialRefunds: Refund[] = [
   },
   {
     id: "#986",
-    customer: "Noah Patterson",
+    customer: "نوح پترسون",
     avatar: "/images/users/user19.jpg",
-    date: "08 Jun 2024",
+    date: "۰۸ ژوئن ۲۰۲۴",
     orderReturned: 5,
     orderRefunded: 3,
     orderReplaced: 2,
@@ -172,9 +172,9 @@ const initialRefunds: Refund[] = [
   },
   {
     id: "#985",
-    customer: "Harper Moore",
+    customer: "هارپر مور",
     avatar: "/images/users/user20.jpg",
-    date: "07 Jun 2024",
+    date: "۰۷ ژوئن ۲۰۲۴",
     orderReturned: 1,
     orderRefunded: 1,
     orderReplaced: 0,
@@ -183,9 +183,9 @@ const initialRefunds: Refund[] = [
   },
   {
     id: "#984",
-    customer: "Mason Roberts",
+    customer: "میسون رابرتس",
     avatar: "/images/users/user21.jpg",
-    date: "06 Jun 2024",
+    date: "۰۶ ژوئن ۲۰۲۴",
     orderReturned: 3,
     orderRefunded: 2,
     orderReplaced: 1,
@@ -194,9 +194,9 @@ const initialRefunds: Refund[] = [
   },
   {
     id: "#983",
-    customer: "Ava Williams",
+    customer: "آوا ویلیامز",
     avatar: "/images/users/user22.jpg",
-    date: "05 Jun 2024",
+    date: "۰۵ ژوئن ۲۰۲۴",
     orderReturned: 4,
     orderRefunded: 3,
     orderReplaced: 2,
@@ -205,9 +205,9 @@ const initialRefunds: Refund[] = [
   },
   {
     id: "#982",
-    customer: "Elijah Reed",
+    customer: "الیجاه رید",
     avatar: "/images/users/user23.jpg",
-    date: "04 Jun 2024",
+    date: "۰۴ ژوئن ۲۰۲۴",
     orderReturned: 2,
     orderRefunded: 1,
     orderReplaced: 1,
@@ -216,9 +216,9 @@ const initialRefunds: Refund[] = [
   },
   {
     id: "#981",
-    customer: "Madison Carter",
+    customer: "مدیسون کارتر",
     avatar: "/images/users/user24.jpg",
-    date: "03 Jun 2024",
+    date: "۰۳ ژوئن ۲۰۲۴",
     orderReturned: 5,
     orderRefunded: 4,
     orderReplaced: 3,
@@ -227,9 +227,9 @@ const initialRefunds: Refund[] = [
   },
   {
     id: "#980",
-    customer: "Jackson Bennett",
+    customer: "جکسون بنت",
     avatar: "/images/users/user25.jpg",
-    date: "02 Jun 2024",
+    date: "۰۲ ژوئن ۲۰۲۴",
     orderReturned: 1,
     orderRefunded: 0,
     orderReplaced: 0,
@@ -244,7 +244,6 @@ const RefundsTable: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const refundsPerPage = 10;
 
-  // Filter refunds based on search term
   const filteredRefunds = refunds.filter(
     (refund) =>
       refund.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -252,30 +251,22 @@ const RefundsTable: React.FC = () => {
       refund.date.includes(searchTerm)
   );
 
-  // Pagination logic
   const totalPages = Math.ceil(filteredRefunds.length / refundsPerPage);
   const paginatedRefunds = filteredRefunds.slice(
     (currentPage - 1) * refundsPerPage,
     currentPage * refundsPerPage
   );
 
-  // Handle page change
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
-  // Handle previous page
   const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
-  // Handle next page
   const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
 
   return (
@@ -289,7 +280,7 @@ const RefundsTable: React.FC = () => {
               </label>
               <input
                 type="text"
-                placeholder="Search here..."
+                placeholder="جستجو..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="bg-gray-50 border border-gray-50 h-[36px] text-xs rounded-md w-full block text-black pt-[11px] pb-[12px] ltr:pl-[38px] rtl:pr-[38px] ltr:pr-[13px] ltr:md:pr-[16px] rtl:pl-[13px] rtl:md:pl-[16px] placeholder:text-gray-500 outline-0 dark:bg-[#15203c] dark:text-white dark:border-[#15203c] dark:placeholder:text-gray-400"
@@ -304,28 +295,28 @@ const RefundsTable: React.FC = () => {
               <thead className="text-black dark:text-white">
                 <tr>
                   <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap ltr:first:rounded-tl-md ltr:last:rounded-tr-md rtl:first:rounded-tr-md rtl:last:rounded-tl-md">
-                    ID
+                    شناسه
                   </th>
-                  <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap ltr:first:rounded-tl-md ltr:last:rounded-tr-md rtl:first:rounded-tr-md rtl:last:rounded-tl-md">
-                    Customer
+                  <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap">
+                    مشتری
                   </th>
-                  <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap ltr:first:rounded-tl-md ltr:last:rounded-tr-md rtl:first:rounded-tr-md rtl:last:rounded-tl-md">
-                    Date
+                  <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap">
+                    تاریخ
                   </th>
-                  <th className="font-medium ltr:text-right rtl:text-left px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap ltr:first:rounded-tl-md ltr:last:rounded-tr-md rtl:first:rounded-tr-md rtl:last:rounded-tl-md">
-                    No. Order Returned
+                  <th className="font-medium ltr:text-right rtl:text-left px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap">
+                    تعداد سفارش بازگشتی
                   </th>
-                  <th className="font-medium ltr:text-right rtl:text-left px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap ltr:first:rounded-tl-md ltr:last:rounded-tr-md rtl:first:rounded-tr-md rtl:last:rounded-tl-md">
-                    No. Order Refunded
+                  <th className="font-medium ltr:text-right rtl:text-left px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap">
+                    تعداد سفارش مسترد شده
                   </th>
-                  <th className="font-medium ltr:text-right rtl:text-left px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap ltr:first:rounded-tl-md ltr:last:rounded-tr-md rtl:first:rounded-tr-md rtl:last:rounded-tl-md">
-                    No. Order Replaced
+                  <th className="font-medium ltr:text-right rtl:text-left px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap">
+                    تعداد سفارش جایگزین
                   </th>
-                  <th className="font-medium ltr:text-right rtl:text-left px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap ltr:first:rounded-tl-md ltr:last:rounded-tr-md rtl:first:rounded-tr-md rtl:last:rounded-tl-md">
-                    Total Refunded
+                  <th className="font-medium ltr:text-right rtl:text-left px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap">
+                    کل مسترد شده
                   </th>
-                  <th className="font-medium ltr:text-right rtl:text-left px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap ltr:first:rounded-tl-md ltr:last:rounded-tr-md rtl:first:rounded-tr-md rtl:last:rounded-tl-md">
-                    Total Replaced
+                  <th className="font-medium ltr:text-right rtl:text-left px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap">
+                    کل جایگزین شده
                   </th>
                 </tr>
               </thead>
@@ -333,11 +324,11 @@ const RefundsTable: React.FC = () => {
                 {paginatedRefunds.length > 0 ? (
                   paginatedRefunds.map((refund) => (
                     <tr key={refund.id}>
-                      <td className="text-gray-500 dark:text-gray-400 ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
+                      <td className="text-gray-500 dark:text-gray-400 ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036]">
                         {refund.id}
                       </td>
 
-                      <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
+                      <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036]">
                         <div className="flex items-center">
                           <div className="w-[40px] rounded-full">
                             <Image
@@ -356,27 +347,27 @@ const RefundsTable: React.FC = () => {
                         </div>
                       </td>
 
-                      <td className="text-gray-500 dark:text-gray-400 ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
+                      <td className="text-gray-500 dark:text-gray-400 ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036]">
                         {refund.date}
                       </td>
 
-                      <td className="text-gray-500 dark:text-gray-400 ltr:text-right rtl:text-left whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
+                      <td className="text-gray-500 dark:text-gray-400 ltr:text-right rtl:text-left whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036]">
                         {refund.orderReturned}
                       </td>
 
-                      <td className="text-gray-500 dark:text-gray-400 ltr:text-right rtl:text-left whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
+                      <td className="text-gray-500 dark:text-gray-400 ltr:text-right rtl:text-left whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036]">
                         {refund.orderRefunded}
                       </td>
 
-                      <td className="text-gray-500 dark:text-gray-400 ltr:text-right rtl:text-left whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
+                      <td className="text-gray-500 dark:text-gray-400 ltr:text-right rtl:text-left whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036]">
                         {refund.orderReplaced}
                       </td>
 
-                      <td className="text-gray-500 dark:text-gray-400 ltr:text-right rtl:text-left whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
+                      <td className="text-gray-500 dark:text-gray-400 ltr:text-right rtl:text-left whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036]">
                         ${refund.totalRefunded.toFixed(2)}
                       </td>
 
-                      <td className="text-gray-500 dark:text-gray-400 ltr:text-right rtl:text-left whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
+                      <td className="text-gray-500 dark:text-gray-400 ltr:text-right rtl:text-left whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036]">
                         ${refund.totalReplaced.toFixed(2)}
                       </td>
                     </tr>
@@ -384,7 +375,7 @@ const RefundsTable: React.FC = () => {
                 ) : (
                   <tr>
                     <td colSpan={8} className="text-center py-4">
-                      No matching results found.
+                      نتیجه‌ای یافت نشد.
                     </td>
                   </tr>
                 )}
@@ -394,51 +385,47 @@ const RefundsTable: React.FC = () => {
 
           <div className="px-[20px] py-[12px] md:py-[14px] rounded-b-md border-l border-r border-b border-gray-100 dark:border-[#172036] sm:flex sm:items-center justify-between">
             <p className="!mb-0 !text-sm">
-              Showing {paginatedRefunds.length} of {filteredRefunds.length}{" "}
-              results
+              نمایش {paginatedRefunds.length} از {filteredRefunds.length} نتیجه
             </p>
 
             <ol className="mt-[10px] sm:mt-0">
-              <li className="inline-block mx-[2px] ltr:first:ml-0 ltr:last:mr-0 rtl:first:mr-0 rtl:last:ml-0">
+              <li className="inline-block mx-[2px]">
                 <button
-                  onClick={handlePreviousPage}
+                  onClick={() => handlePageChange(currentPage - 1)}
                   disabled={currentPage === 1}
-                  className="w-[31px] h-[31px] block leading-[29px] relative text-center rounded-md border border-gray-100 dark:border-[#172036] transition-all hover:bg-primary-500 hover:text-white hover:border-primary-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-[31px] h-[31px] block leading-[29px] relative text-center rounded-md border border-gray-100 dark:border-[#172036] transition-all hover:bg-primary-500 hover:text-white hover:border-primary-500"
                 >
                   <span className="opacity-0">0</span>
                   <i className="material-symbols-outlined left-0 right-0 absolute top-1/2 -translate-y-1/2">
-                    chevron_left
+                    chevron_right
                   </i>
                 </button>
               </li>
 
-              {Array.from({ length: totalPages }, (_, index) => (
-                <li
-                  key={index}
-                  className="inline-block mx-[2px] ltr:first:ml-0 ltr:last:mr-0 rtl:first:mr-0 rtl:last:ml-0"
-                >
+              {[...Array(totalPages)].map((_, index) => (
+                <li key={index} className="inline-block mx-[2px]">
                   <button
-                    onClick={() => handlePageChange(index + 1)}
                     className={`w-[31px] h-[31px] block leading-[29px] relative text-center rounded-md border ${
                       currentPage === index + 1
-                        ? "border-primary-500 bg-primary-500 text-white"
-                        : "border-gray-100 dark:border-[#172036] hover:bg-primary-500 hover:text-white hover:border-primary-500"
+                        ? "bg-primary-500 text-white border-primary-500"
+                        : "border-gray-100 dark:border-[#172036] transition-all hover:bg-primary-500 hover:text-white hover:border-primary-500"
                     }`}
+                    onClick={() => handlePageChange(index + 1)}
                   >
                     {index + 1}
                   </button>
                 </li>
               ))}
 
-              <li className="inline-block mx-[2px] ltr:first:ml-0 ltr:last:mr-0 rtl:first:mr-0 rtl:last:ml-0">
+              <li className="inline-block mx-[2px]">
                 <button
-                  onClick={handleNextPage}
+                  onClick={() => handlePageChange(currentPage + 1)}
                   disabled={currentPage === totalPages}
-                  className="w-[31px] h-[31px] block leading-[29px] relative text-center rounded-md border border-gray-100 dark:border-[#172036] transition-all hover:bg-primary-500 hover:text-white hover:border-primary-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-[31px] h-[31px] block leading-[29px] relative text-center rounded-md border border-gray-100 dark:border-[#172036] transition-all hover:bg-primary-500 hover:text-white hover:border-primary-500"
                 >
                   <span className="opacity-0">0</span>
                   <i className="material-symbols-outlined left-0 right-0 absolute top-1/2 -translate-y-1/2">
-                    chevron_right
+                    chevron_left
                   </i>
                 </button>
               </li>

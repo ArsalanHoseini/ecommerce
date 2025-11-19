@@ -1,11 +1,11 @@
-import RefundsTable from "@/components/eCommerce/Refunds/RefundsTable";
+import ProductDetails from "@/components/eCommerce/ProductDetails";
 import Link from "next/link";
 
 export default function Page() {
   return (
     <>
       <div className="mb-[25px] md:flex items-center justify-between">
-        <h5 className="!mb-0">Refunds</h5>
+        <h5 className="!mb-0">Product Details</h5>
 
         <ol className="breadcrumb mt-[12px] md:mt-0">
           <li className="breadcrumb-item inline-block relative text-sm mx-[11px] ltr:first:ml-0 rtl:first:mr-0 ltr:last:mr-0 rtl:last:ml-0">
@@ -25,12 +25,12 @@ export default function Page() {
           </li>
 
           <li className="breadcrumb-item inline-block relative text-sm mx-[11px] ltr:first:ml-0 rtl:first:mr-0 ltr:last:mr-0 rtl:last:ml-0">
-            Refunds
+            Product Details
           </li>
         </ol>
       </div>
 
-      <RefundsTable />
+      <ProductDetails />
     </>
   );
 }

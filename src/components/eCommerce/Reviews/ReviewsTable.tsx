@@ -23,186 +23,179 @@ interface Review {
 const initialReviews: Review[] = [
   {
     id: "#999",
-    reviewer: "Olivia Clark",
+    reviewer: "اولیویا کلارک",
     email: "olivia@trezo.com",
     avatar: "/images/users/user6.jpg",
     rating: 5,
-    reviewText: "Lorem Ipsum is simply dummy text of the printing industry.",
+    reviewText: "لورم ایپسوم متن ساختگی صنعت چاپ است.",
     productImg: "/images/products/product1.jpg",
-    productName: "Smart Band",
+    productName: "مچ‌بند هوشمند",
     viewLink: "/ecommerce/product-details/",
-    date: "17 Dec 2024",
-    time: "08:30 PM",
+    date: "17 دسامبر 2024",
+    time: "08:30 بعدازظهر",
     status: "Pending",
   },
   {
     id: "#998",
-    reviewer: "Zephyr Zing",
+    reviewer: "زفیرف زینگ",
     email: "zephyr@trezo.com",
     avatar: "/images/users/user7.jpg",
     rating: 4.5,
     reviewText:
-      "Lorem Ipsum has been the industry's standard dummy text since the 1500s.",
+      "لورم ایپسوم از متن استاندارد صنعت چاپ از قرن ۱۵ استفاده می‌کند.",
     productImg: "/images/products/product2.jpg",
-    productName: "Headphone",
+    productName: "هدفون",
     viewLink: "/ecommerce/product-details/",
-    date: "16 Dec 2024",
-    time: "10:11 PM",
+    date: "16 دسامبر 2024",
+    time: "10:11 بعدازظهر",
     status: "Pending",
   },
   {
     id: "#997",
-    reviewer: "Nova Nectar",
+    reviewer: "نوا نکتار",
     email: "nova@trezo.com",
     avatar: "/images/users/user8.jpg",
     rating: 4,
     reviewText:
-      "It has survived not only five centuries, but also the leap into electronic typesetting.",
+      "این متن نه تنها پنج قرن را پشت سر گذاشته بلکه وارد تنظیمات الکترونیکی نیز شده است.",
     productImg: "/images/products/product3.jpg",
-    productName: "iPhone 15 Plus",
+    productName: "آیفون ۱۵ پلاس",
     viewLink: "/ecommerce/product-details/",
-    date: "15 Dec 2024",
-    time: "11:11 AM",
+    date: "15 دسامبر 2024",
+    time: "11:11 صبح",
     status: "Pending",
   },
   {
     id: "#996",
-    reviewer: "Isabella Chang",
+    reviewer: "ایزابلا چانگ",
     email: "isabella@trezo.com",
     avatar: "/images/users/user9.jpg",
     rating: 3.5,
     reviewText:
-      "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
+      "این متن در دههٔ ۱۹۶۰ با انتشار ورقه‌های Letraset حاوی قطعات لورم ایپسوم محبوب شد.",
     productImg: "/images/products/product4.jpg",
-    productName: "Bluetooth Speaker",
+    productName: "بلوتوث اسپیکر",
     viewLink: "/ecommerce/product-details/",
-    date: "14 Dec 2024",
-    time: "09:45 AM",
+    date: "14 دسامبر 2024",
+    time: "09:45 صبح",
     status: "Pending",
   },
   {
     id: "#995",
-    reviewer: "Alina Bennett",
+    reviewer: "آلینا بنت",
     email: "alina@trezo.com",
     avatar: "/images/users/user10.jpg",
     rating: 5,
     reviewText:
-      "It is a long established fact that a reader will be distracted by the readable content of a page.",
+      "این یک حقیقت قدیمی است که خواننده با محتوای قابل خواندن صفحه منحرف خواهد شد.",
     productImg: "/images/products/product5.jpg",
-    productName: "Airbuds 2nd Gen",
+    productName: "ایربادز نسل دوم",
     viewLink: "/ecommerce/product-details/",
-    date: "13 Dec 2024",
-    time: "07:15 PM",
+    date: "13 دسامبر 2024",
+    time: "07:15 بعدازظهر",
     status: "Published",
   },
   {
     id: "#994",
-    reviewer: "Liam Harper",
+    reviewer: "لیام هارپر",
     email: "liam@trezo.com",
     avatar: "/images/users/user11.jpg",
     rating: 4.5,
     reviewText:
-      "Contrary to popular belief, Lorem Ipsum is not simply random text.",
+      "برخلاف باور عموم، لورم ایپسوم فقط یک متن تصادفی نیست.",
     productImg: "/images/products/product6.jpg",
-    productName: "Smart Band",
+    productName: "مچ‌بند هوشمند",
     viewLink: "/ecommerce/product-details/",
-    date: "12 Dec 2024",
-    time: "05:22 PM",
+    date: "12 دسامبر 2024",
+    time: "05:22 بعدازظهر",
     status: "Published",
   },
   {
     id: "#993",
-    reviewer: "Emma Collins",
+    reviewer: "اما کالینز",
     email: "emma@trezo.com",
     avatar: "/images/users/user12.jpg",
     rating: 4,
     reviewText:
-      "Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text.",
+      "بسیاری از بسته‌های نشر رومیزی و ویرایشگرهای وب اکنون از لورم ایپسوم به‌عنوان متن نمونه پیش‌فرض استفاده می‌کنند.",
     productImg: "/images/products/product7.jpg",
-    productName: "Smart Band",
+    productName: "مچ‌بند هوشمند",
     viewLink: "/ecommerce/product-details/",
-    date: "11 Dec 2024",
-    time: "02:18 PM",
+    date: "11 دسامبر 2024",
+    time: "02:18 بعدازظهر",
     status: "Published",
   },
   {
     id: "#992",
-    reviewer: "Sophia Martin",
+    reviewer: "سوفیا مارتین",
     email: "sophia@trezo.com",
     avatar: "/images/users/user13.jpg",
     rating: 4,
     reviewText:
-      "The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested.",
+      "بخش استاندارد لورم ایپسوم که از قرن ۱۵۰۰ استفاده می‌شود در زیر برای علاقه‌مندان بازتولید شده است.",
     productImg: "/images/products/product1.jpg",
-    productName: "Smart Band",
+    productName: "مچ‌بند هوشمند",
     viewLink: "/ecommerce/product-details/",
-    date: "10 Dec 2024",
-    time: "01:45 PM",
+    date: "10 دسامبر 2024",
+    time: "01:45 بعدازظهر",
     status: "Published",
   },
   {
     id: "#991",
-    reviewer: "James Turner",
+    reviewer: "جیمز ترنر",
     email: "james@trezo.com",
     avatar: "/images/users/user14.jpg",
     rating: 3,
     reviewText:
-      "It has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.",
+      "توزیع حروف تا حدی طبیعی است و با 'محتوا اینجا، محتوا آنجا' متفاوت است و به انگلیسی قابل خواندن شبیه می‌شود.",
     productImg: "/images/products/product1.jpg",
-    productName: "Smart Band",
+    productName: "مچ‌بند هوشمند",
     viewLink: "/ecommerce/product-details/",
-    date: "09 Dec 2024",
-    time: "10:05 AM",
+    date: "09 دسامبر 2024",
+    time: "10:05 صبح",
     status: "Published",
   },
   {
     id: "#990",
-    reviewer: "Benjamin Scott",
+    reviewer: "بنجامین اسکات",
     email: "benjamin@trezo.com",
     avatar: "/images/users/user15.jpg",
     rating: 5,
     reviewText:
-      "The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, making it look like readable English.",
+      "هدف استفاده از لورم ایپسوم این است که توزیع حروف تقریبا طبیعی باشد و قابل خواندن انگلیسی به نظر برسد.",
     productImg: "/images/products/product1.jpg",
-    productName: "Smart Band",
+    productName: "مچ‌بند هوشمند",
     viewLink: "/ecommerce/product-details/",
-    date: "08 Dec 2024",
-    time: "03:25 PM",
+    date: "08 دسامبر 2024",
+    time: "03:25 بعدازظهر",
     status: "Pending",
   },
 ];
 
 const ReviewsTable: React.FC = () => {
-  // selectedOption state
-  const [selectedOption, setSelectedOption] = useState<string>("This Week");
-
-  const handleSelect = (option: string) => {
-    setSelectedOption(option);
-    console.log(`Selected option: ${option}`); // Add your logic here
-  };
-
-  // Table
   const [reviews, setReviews] = useState<Review[]>(initialReviews);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [searchTerm, setSearchTerm] = useState<string>("");
 
   const reviewsPerPage = 5;
 
-  // Handle review deletion
   const handleDelete = (reviewId: string) => {
     setReviews((prevReviews) =>
       prevReviews.filter((review) => review.id !== reviewId)
     );
   };
 
-  // Filtered Reviews Based on Search
-  const filteredReviews = reviews.filter((review) =>
-    review.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    review.reviewer.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    review.productName.toLowerCase().includes(searchTerm.toLowerCase())
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const filteredReviews = reviews.filter(
+    (review) =>
+      review.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      review.reviewer.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      review.productName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Pagination logic
   const totalPages = Math.ceil(filteredReviews.length / reviewsPerPage);
   const paginatedReviews = filteredReviews.slice(
     (currentPage - 1) * reviewsPerPage,
@@ -219,72 +212,40 @@ const ReviewsTable: React.FC = () => {
             </label>
             <input
               type="text"
-              placeholder="Search review..."
+              placeholder="جستجوی نظر..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="bg-gray-50 border border-gray-50 h-[36px] text-xs rounded-md w-full block text-black pt-[11px] pb-[12px] ltr:pl-[38px] rtl:pr-[38px] ltr:pr-[13px] ltr:md:pr-[16px] rtl:pl-[13px] rtl:md:pl-[16px] placeholder:text-gray-500 outline-0 dark:bg-[#15203c] dark:text-white dark:border-[#15203c] dark:placeholder:text-gray-400"
             />
           </form>
         </div>
-
-        <div className="trezo-card-subtitle mt-[15px] sm:mt-0">
-          <div className="trezo-card-subtitle">
-            <Menu as="div" className="trezo-card-dropdown relative">
-              <MenuButton className="trezo-card-dropdown-btn inline-block rounded-md border border-gray-100 py-[5px] md:py-[6.5px] px-[12px] md:px-[19px] transition-all hover:bg-gray-50 dark:border-[#172036] dark:hover:bg-[#0a0e19]">
-                <span className="inline-block relative ltr:pr-[17px] ltr:md:pr-[20px] rtl:pl-[17px] rtl:ml:pr-[20px]">
-                  {selectedOption}
-                  <i className="ri-arrow-down-s-line text-lg absolute ltr:-right-[3px] rtl:-left-[3px] top-1/2 -translate-y-1/2"></i>
-                </span>
-              </MenuButton>
-
-              <MenuItems
-                transition
-                className="transition-all bg-white shadow-3xl rounded-md top-full py-[15px] absolute ltr:right-0 rtl:left-0 w-[195px] z-[50] dark:bg-dark dark:shadow-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
-              >
-                {["This Day", "This Week", "This Month", "This Year"].map((option) => (
-                  <MenuItem
-                    key={option}
-                    as="div"
-                    className={`block w-full transition-all text-black cursor-pointer ltr:text-left rtl:text-right relative py-[8px] px-[20px] hover:bg-gray-50 dark:text-white dark:hover:bg-black ${
-                      selectedOption === option ? "font-semibold" : ""
-                    }`}
-                    onClick={() => handleSelect(option)}
-                  >
-                    {option}
-                  </MenuItem>
-                ))}
-              </MenuItems>
-            </Menu>
-          </div> 
-        </div>
       </div>
 
       <div className="trezo-card-content">
-        {/* Table */}
         <div className="table-responsive overflow-x-auto">
           <table className="w-full">
             <thead className="text-black dark:text-white bg-gray-50 dark:bg-[#15203c]">
               <tr>
                 <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap ltr:first:rounded-tl-md ltr:last:rounded-tr-md rtl:first:rounded-tr-md rtl:last:rounded-tl-md">
-                  ID
+                  شناسه
                 </th>
-                <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap ltr:first:rounded-tl-md ltr:last:rounded-tr-md rtl:first:rounded-tr-md rtl:last:rounded-tl-md">
-                  Reviewer
+                <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap">
+                  نویسنده
                 </th>
-                <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap ltr:first:rounded-tl-md ltr:last:rounded-tr-md rtl:first:rounded-tr-md rtl:last:rounded-tl-md">
-                  Review
+                <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap">
+                  نظر
                 </th>
-                <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap ltr:first:rounded-tl-md ltr:last:rounded-tr-md rtl:first:rounded-tr-md rtl:last:rounded-tl-md">
-                  Product
+                <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap">
+                  محصول
                 </th>
-                <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap ltr:first:rounded-tl-md ltr:last:rounded-tr-md rtl:first:rounded-tr-md rtl:last:rounded-tl-md">
-                  Date
+                <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap">
+                  تاریخ
                 </th>
-                <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap ltr:first:rounded-tl-md ltr:last:rounded-tr-md rtl:first:rounded-tr-md rtl:last:rounded-tl-md">
-                  Status
+                <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap">
+                  وضعیت
                 </th>
-                <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap ltr:first:rounded-tl-md ltr:last:rounded-tr-md rtl:first:rounded-tr-md rtl:last:rounded-tl-md">
-                  Action
+                <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap">
+                  عملیات
                 </th>
               </tr>
             </thead>
@@ -295,11 +256,11 @@ const ReviewsTable: React.FC = () => {
                   key={review.id}
                   className="border-b border-gray-100 dark:border-[#172036]"
                 >
-                  <td className="text-gray-500 dark:text-gray-400 ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
+                  <td className="text-gray-500 dark:text-gray-400 ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036]">
                     {review.id}
                   </td>
 
-                  <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
+                  <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036]">
                     <div className="flex items-center">
                       <div className="w-[40px] rounded-full">
                         <Image
@@ -312,7 +273,6 @@ const ReviewsTable: React.FC = () => {
                       </div>
                       <div className="ltr:ml-[12px] rtl:mr-[12px]">
                         <span className="font-medium">{review.reviewer}</span>
-
                         <span className="block text-sm text-gray-500 dark:text-gray-400">
                           {review.email}
                         </span>
@@ -320,7 +280,7 @@ const ReviewsTable: React.FC = () => {
                     </div>
                   </td>
 
-                  <td className="ltr:text-left rtl:text-right px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
+                  <td className="ltr:text-left rtl:text-right px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036]">
                     <div className="leading-none flex items-center gap-[2px] text-lg text-[#ee8336]">
                       {Array.from({ length: 5 }, (_, i) => (
                         <i
@@ -334,7 +294,7 @@ const ReviewsTable: React.FC = () => {
                     <p className="mt-[10px] w-[350px]">{review.reviewText}</p>
                   </td>
 
-                  <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
+                  <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036]">
                     <div className="flex items-center">
                       <div className="rounded-md w-[40px]">
                         <Image
@@ -356,12 +316,12 @@ const ReviewsTable: React.FC = () => {
                     </div>
                   </td>
 
-                  <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
+                  <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036]">
                     <span className="block">{review.date}</span>
                     <span className="block">{review.time}</span>
                   </td>
 
-                  <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
+                  <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036]">
                     <span
                       className={`px-[8px] py-[3px] inline-block rounded-sm font-medium text-xs dark:bg-[#15203c] ${
                         review.status === "Published"
@@ -369,11 +329,11 @@ const ReviewsTable: React.FC = () => {
                           : "bg-primary-50 text-primary-500"
                       }`}
                     >
-                      {review.status}
+                      {review.status === "Published" ? "منتشر شده" : "در انتظار"}
                     </span>
                   </td>
 
-                  <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
+                  <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036]">
                     <div className="flex items-center gap-[9px]">
                       <button
                         type="button"
@@ -410,33 +370,53 @@ const ReviewsTable: React.FC = () => {
           </table>
         </div>
 
-        {/* Pagination */}
         <div className="px-[20px] py-[12px] md:py-[14px] rounded-b-md border-l border-r border-b border-gray-100 dark:border-[#172036] sm:flex sm:items-center justify-between">
           <p className="!mb-0 !text-sm">
-            Showing {reviewsPerPage} of {reviews.length} reviews
+            نمایش {reviewsPerPage} از {reviews.length} نظر
           </p>
 
-          <div className="flex gap-[5px]">
-            <button
-              className="w-[31px] h-[31px] block leading-[29px] relative text-center rounded-md border border-gray-100 dark:border-[#172036] transition-all hover:bg-primary-500 hover:text-white hover:border-primary-500"
-              disabled={currentPage === 1}
-              onClick={() => setCurrentPage(currentPage - 1)}
-            >
-              <i className="material-symbols-outlined left-0 right-0 absolute top-1/2 -translate-y-1/2 text-[20px !im]">
-                chevron_left
-              </i>
-            </button>
+          <ol className="mt-[10px] sm:mt-0">
+            <li className="inline-block mx-[2px]">
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="w-[31px] h-[31px] block leading-[29px] relative text-center rounded-md border border-gray-100 dark:border-[#172036] transition-all hover:bg-primary-500 hover:text-white hover:border-primary-500"
+              >
+                <span className="opacity-0">0</span>
+                <i className="material-symbols-outlined left-0 right-0 absolute top-1/2 -translate-y-1/2">
+                  chevron_right
+                </i>
+              </button>
+            </li>
 
-            <button
-              className="w-[31px] h-[31px] block leading-[29px] relative text-center rounded-md border border-gray-100 dark:border-[#172036] transition-all hover:bg-primary-500 hover:text-white hover:border-primary-500"
-              disabled={currentPage === totalPages}
-              onClick={() => setCurrentPage(currentPage + 1)}
-            >
-              <i className="material-symbols-outlined left-0 right-0 absolute top-1/2 -translate-y-1/2">
-                chevron_right
-              </i>
-            </button>
-          </div>
+            {[...Array(totalPages)].map((_, index) => (
+              <li key={index} className="inline-block mx-[2px]">
+                <button
+                  className={`w-[31px] h-[31px] block leading-[29px] relative text-center rounded-md border ${
+                    currentPage === index + 1
+                      ? "bg-primary-500 text-white border-primary-500"
+                      : "border-gray-100 dark:border-[#172036] transition-all hover:bg-primary-500 hover:text-white hover:border-primary-500"
+                  }`}
+                  onClick={() => handlePageChange(index + 1)}
+                >
+                  {index + 1}
+                </button>
+              </li>
+            ))}
+
+            <li className="inline-block mx-[2px]">
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="w-[31px] h-[31px] block leading-[29px] relative text-center rounded-md border border-gray-100 dark:border-[#172036] transition-all hover:bg-primary-500 hover:text-white hover:border-primary-500"
+              >
+                <span className="opacity-0">0</span>
+                <i className="material-symbols-outlined left-0 right-0 absolute top-1/2 -translate-y-1/2">
+                  chevron_left
+                </i>
+              </button>
+            </li>
+          </ol>
         </div>
       </div>
     </div>

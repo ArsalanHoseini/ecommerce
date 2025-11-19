@@ -24,7 +24,7 @@ import {
 
 const CreateProductForm: React.FC = () => {
   // Text Editor
-  const [value, setValue] = useState<string>("Type your message here...");
+  const [value, setValue] = useState<string>("پیام خود را اینجا بنویسید...");
 
   function onChange(e: ContentEditableEvent) {
     setValue(e.target.value);
@@ -52,7 +52,7 @@ const CreateProductForm: React.FC = () => {
             <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
               <div className="trezo-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
                 <div className="trezo-card-title">
-                  <h5 className="!mb-0">Add A Product</h5>
+                  <h5 className="!mb-0">افزودن محصول</h5>
                 </div>
               </div>
 
@@ -60,43 +60,43 @@ const CreateProductForm: React.FC = () => {
                 <div className="sm:grid sm:grid-cols-2 sm:gap-[25px]">
                   <div className="mb-[20px] sm:mb-0">
                     <label className="mb-[10px] text-black dark:text-white font-medium block">
-                      Product Title
+                      عنوان محصول
                     </label>
                     <input
                       type="text"
                       className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
-                      placeholder="E.g. Google Pixel 7 Pro"
+                      placeholder="مثلاً Google Pixel 7 Pro"
                     />
                   </div>
 
                   <div className="mb-[20px] sm:mb-0">
                     <label className="mb-[10px] text-black dark:text-white font-medium block">
-                      Product Type
+                      نوع محصول
                     </label>
                     <select className="h-[55px] rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[13px] block w-full outline-0 cursor-pointer transition-all focus:border-primary-500">
-                      <option value={0}>Select</option>
-                      <option value={1}>Digital Product</option>
-                      <option value={2}>Physical Product</option>
+                      <option value={0}>انتخاب کنید</option>
+                      <option value={1}>محصول دیجیتال</option>
+                      <option value={2}>محصول فیزیکی</option>
                     </select>
                   </div>
 
                   <div className="mb-[20px] sm:mb-0">
                     <label className="mb-[10px] text-black dark:text-white font-medium block">
-                      SKU
+                      کد SKU
                     </label>
                     <input
                       type="text"
                       className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
-                      placeholder="E.g. ABC-12345"
+                      placeholder="مثلاً ABC-12345"
                     />
                   </div>
 
                   <div className="mb-[20px] sm:mb-0">
                     <label className="mb-[10px] text-black dark:text-white font-medium block">
-                      Brand Name
+                      نام برند
                     </label>
                     <select className="h-[55px] rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[13px] block w-full outline-0 cursor-pointer transition-all focus:border-primary-500">
-                      <option value={0}>Select</option>
+                      <option value={0}>انتخاب کنید</option>
                       <option value={1}>Emburo</option>
                       <option value={2}>Fediz</option>
                       <option value={3}>Debilop</option>
@@ -107,7 +107,7 @@ const CreateProductForm: React.FC = () => {
 
                   <div className="sm:col-span-2 mb-[20px] sm:mb-0">
                     <label className="mb-[10px] text-black dark:text-white font-medium block">
-                      Product Description
+                      توضیحات محصول
                     </label>
                     <EditorProvider>
                       <Editor
@@ -140,29 +140,29 @@ const CreateProductForm: React.FC = () => {
 
                   <div className="mb-[20px] sm:mb-0">
                     <label className="mb-[10px] text-black dark:text-white font-medium block">
-                      Regular Price
+                      قیمت عادی
                     </label>
                     <input
                       type="text"
                       className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
-                      placeholder="E.g. $99"
+                      placeholder="مثلاً $99"
                     />
                   </div>
 
                   <div className="mb-[20px] sm:mb-0">
                     <label className="mb-[10px] text-black dark:text-white font-medium block">
-                      Sale Price
+                      قیمت فروش
                     </label>
                     <input
                       type="text"
                       className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
-                      placeholder="E.g. $29"
+                      placeholder="مثلاً $29"
                     />
                   </div>
 
                   <div className="mb-[20px] sm:mb-0">
                     <label className="mb-[10px] text-black dark:text-white font-medium block">
-                      Publish Schedule
+                      زمان‌بندی انتشار
                     </label>
                     <input
                       type="date"
@@ -172,40 +172,40 @@ const CreateProductForm: React.FC = () => {
 
                   <div className="mb-[20px] sm:mb-0">
                     <label className="mb-[10px] text-black dark:text-white font-medium block">
-                      Product in Stock
+                      موجودی محصول
                     </label>
                     <input
                       type="text"
                       className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
-                      placeholder="E.g. $17"
+                      placeholder="مثلاً 17"
                     />
                   </div>
 
                   <div className="mb-[20px] sm:mb-0">
                     <label className="mb-[10px] text-black dark:text-white font-medium block">
-                      Product ID
+                      شناسه محصول
                     </label>
                     <input
                       type="text"
                       className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
-                      placeholder="E.g. #JAN-2345"
+                      placeholder="مثلاً #JAN-2345"
                     />
                   </div>
 
                   <div className="mb-[20px] sm:mb-0">
                     <label className="mb-[10px] text-black dark:text-white font-medium block">
-                      Discount / Offer
+                      تخفیف / پیشنهاد
                     </label>
                     <input
                       type="text"
                       className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
-                      placeholder="E.g. $20"
+                      placeholder="مثلاً $20"
                     />
                   </div>
 
                   <div className="mb-[20px] sm:mb-0">
                     <label className="mb-[10px] text-black dark:text-white font-medium block">
-                      Available Date
+                      تاریخ موجود بودن
                     </label>
                     <input
                       type="date"
@@ -215,7 +215,7 @@ const CreateProductForm: React.FC = () => {
 
                   <div className="mb-[20px] sm:mb-0">
                     <label className="mb-[10px] text-black dark:text-white font-medium block">
-                      End Date
+                      تاریخ پایان
                     </label>
                     <input
                       type="date"
@@ -225,7 +225,7 @@ const CreateProductForm: React.FC = () => {
 
                   <div className="sm:col-span-2 mb-[20px] sm:mb-0">
                     <label className="mb-[10px] text-black dark:text-white font-medium block">
-                      Upload Product Images
+                      بارگذاری تصاویر محصول
                     </label>
 
                     <div id="fileUploader">
@@ -236,9 +236,9 @@ const CreateProductForm: React.FC = () => {
                           </div>
                           <p className="leading-[1.5]">
                             <strong className="text-black dark:text-white">
-                              Click to upload
+                              برای آپلود کلیک کنید
                             </strong>
-                            <br /> you file here
+                            <br /> فایل خود را اینجا قرار دهید
                           </p>
                         </div>
 
@@ -287,17 +287,17 @@ const CreateProductForm: React.FC = () => {
             <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
               <div className="trezo-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
                 <div className="trezo-card-title">
-                  <h5 className="!mb-0">Product Category & Tags</h5>
+                  <h5 className="!mb-0">دسته‌بندی و برچسب‌ها</h5>
                 </div>
               </div>
 
               <div className="trezo-card-content">
                 <div className="mb-[20px] md:mb-[25px] last:mb-0">
                   <label className="mb-[10px] text-black dark:text-white font-medium block">
-                    Category
+                    دسته‌بندی
                   </label>
                   <select className="h-[55px] rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[13px] block w-full outline-0 cursor-pointer transition-all focus:border-primary-500">
-                    <option value={0}>Select</option>
+                    <option value={0}>انتخاب کنید</option>
                     <option value={1}>Watch</option>
                     <option value={2}>Mobile</option>
                     <option value={3}>Laptop</option>
@@ -308,10 +308,10 @@ const CreateProductForm: React.FC = () => {
 
                 <div className="mb-[20px] md:mb-[25px] last:mb-0">
                   <label className="mb-[10px] text-black dark:text-white font-medium block">
-                    Vendor
+                    فروشنده
                   </label>
                   <select className="h-[55px] rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[13px] block w-full outline-0 cursor-pointer transition-all focus:border-primary-500">
-                    <option value={0}>Select</option>
+                    <option value={0}>انتخاب کنید</option>
                     <option value={1}>Dennis Matthews</option>
                     <option value={2}>Susan Rader</option>
                     <option value={3}>Douglas Harvey</option>
@@ -322,10 +322,10 @@ const CreateProductForm: React.FC = () => {
 
                 <div className="mb-[20px] md:mb-[25px] last:mb-0">
                   <label className="mb-[10px] text-black dark:text-white font-medium block">
-                    Collection
+                    مجموعه
                   </label>
                   <select className="h-[55px] rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[13px] block w-full outline-0 cursor-pointer transition-all focus:border-primary-500">
-                    <option value={0}>Select</option>
+                    <option value={0}>انتخاب کنید</option>
                     <option value={1}>Collection 1</option>
                     <option value={2}>Collection 2</option>
                     <option value={3}>Collection 3</option>
@@ -336,10 +336,10 @@ const CreateProductForm: React.FC = () => {
 
                 <div className="mb-[20px] md:mb-[25px] last:mb-0">
                   <label className="mb-[10px] text-black dark:text-white font-medium block">
-                    Tags
+                    برچسب‌ها
                   </label>
                   <select className="h-[55px] rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[13px] block w-full outline-0 cursor-pointer transition-all focus:border-primary-500">
-                    <option value={0}>Select</option>
+                    <option value={0}>انتخاب کنید</option>
                     <option value={1}>Electronics</option>
                     <option value={2}>Sports</option>
                     <option value={3}>Fashion</option>
@@ -352,29 +352,29 @@ const CreateProductForm: React.FC = () => {
             <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
               <div className="trezo-card-header mb-[20px] md:mb-[25px] flex items-center justify-between">
                 <div className="trezo-card-title">
-                  <h5 className="!mb-0">Other Options</h5>
+                  <h5 className="!mb-0">گزینه‌های دیگر</h5>
                 </div>
               </div>
 
               <div className="trezo-card-content">
                 <div className="mb-[20px] md:mb-[25px] last:mb-0">
                   <label className="mb-[10px] text-black dark:text-white font-medium block">
-                    Title
+                    عنوان
                   </label>
                   <input
                     type="text"
                     className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
-                    placeholder="E.g. Google Pixel 7 Pro"
+                    placeholder="مثلاً Google Pixel 7 Pro"
                   />
                 </div>
 
                 <div className="mb-[20px] md:mb-[25px] last:mb-0">
                   <label className="mb-[10px] text-black dark:text-white font-medium block">
-                    Description
+                    توضیحات
                   </label>
                   <textarea
                     className="h-[140px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] p-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
-                    placeholder="It makes me feel..."
+                    placeholder="احساس خود را درباره محصول بنویسید..."
                   ></textarea>
                 </div>
               </div>
@@ -388,7 +388,7 @@ const CreateProductForm: React.FC = () => {
               type="button"
               className="font-medium inline-block transition-all rounded-md md:text-md ltr:mr-[15px] rtl:ml-[15px] py-[10px] md:py-[12px] px-[20px] md:px-[22px] bg-danger-500 text-white hover:bg-danger-400"
             >
-              Cancel
+              لغو
             </button>
 
             <button
@@ -399,7 +399,7 @@ const CreateProductForm: React.FC = () => {
                 <i className="material-symbols-outlined ltr:left-0 rtl:right-0 absolute top-1/2 -translate-y-1/2">
                   add
                 </i>
-                Create Product
+                ایجاد محصول
               </span>
             </button>
           </div>
