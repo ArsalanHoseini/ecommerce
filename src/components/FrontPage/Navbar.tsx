@@ -3,11 +3,13 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import Cookies from "js-cookie"; // برای مدیریت کوکی توکن
+import api from "../../services/api"; // سرویس Axios با اینترسپتور توکن
 
 const NAV_ITEMS = [
   { name: "Home", path: "/" },
-  { name: "Features", path: "/front-pages/features/" },
+  { name: "shop", path: "/front-pages/features/" },
   { name: "Our Team", path: "/front-pages/team/" },
   { name: "FAQ's", path: "/front-pages/faq/" },
   { name: "Contact", path: "/front-pages/contact/" },
@@ -16,10 +18,16 @@ const NAV_ITEMS = [
 
 const Navbar: React.FC = () => {
   const pathname = usePathname();
+  const router = useRouter();
   const [isMenuOpen, setMenuOpen] = useState(false);
+
+  // وضعیت احراز هویت
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
   const handleToggle = () => setMenuOpen(!isMenuOpen);
 
-  // handleScroll
+  // --- مدیریت اسکرول ---
   useEffect(() => {
     const elementId = document.getElementById("navbar");
     const handleScroll = () => {
@@ -32,11 +40,86 @@ const Navbar: React.FC = () => {
 
     document.addEventListener("scroll", handleScroll);
 
-    // Cleanup event listener on component unmount
     return () => {
       document.removeEventListener("scroll", handleScroll);
     };
-  }, []); // Added empty dependency array to avoid repeated effect calls
+  }, []);
+
+  // --- بررسی وضعیت لاگین ---
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      setIsLoading(true);
+      const token = Cookies.get("access_token");
+
+      if (token) {
+        try {
+          await api.get(
+            process.env.NEXT_PUBLIC_POST_CHECK_LOGIN_API_URL!
+          );
+          setIsLoggedIn(true);
+        } catch (error) {
+          console.error("Login check failed:", error);
+          setIsLoggedIn(false);
+          Cookies.remove("access_token");
+        }
+      } else {
+        setIsLoggedIn(false);
+      }
+      setIsLoading(false);
+    };
+
+    checkLoginStatus();
+  }, [pathname]);
+
+  // --- تابع خروج ---
+  const handleLogout = () => {
+    Cookies.remove("access_token");
+    setIsLoggedIn(false);
+    // ریدایرکت به صفحه ورود یا صفحه اصلی
+    router.push("/");
+  };
+
+  // --- کامپوننت دکمه ورود/خروج (برای رندر شرطی) ---
+  const AuthButton: React.FC = () => {
+    if (isLoading) {
+      // حالت لودینگ
+      return (
+        <div className="inline-block lg:text-[15px] xl:text-[16px] py-[11px] px-[17px] rounded-md h-[48px] w-[190px] bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
+      );
+    }
+
+    if (isLoggedIn) {
+      // دکمه خروج
+      return (
+        <button
+          onClick={handleLogout}
+          className="inline-block lg:text-[15px] xl:text-[16px] py-[11px] px-[17px] bg-red-600 text-white rounded-md transition-all font-medium border border-red-600 hover:bg-red-500 hover:border-red-500"
+        >
+          <span className="inline-block relative ltr:pl-[25px] rtl:pr-[25px] ltr:md:pl-[29px] rtl:md:pr-[29px]">
+            <i className="material-symbols-outlined absolute ltr:left-0 rtl:right-0 top-1/2 -translate-y-1/2 !text-[20px] md:!text-[24px]">
+              logout
+            </i>
+            خروج از حساب
+          </span>
+        </button>
+      );
+    }
+
+    // دکمه ورود
+    return (
+      <Link
+        href="/authentication/enter-phone"
+        className="inline-block lg:text-[15px] xl:text-[16px] py-[11px] px-[17px] bg-purple-600 text-white rounded-md transition-all font-medium border border-purple-600 hover:bg-purple-500 hover:border-purple-500"
+      >
+        <span className="inline-block relative ltr:pl-[25px] rtl:pr-[25px] ltr:md:pl-[29px] rtl:md:pr-[29px]">
+          <i className="material-symbols-outlined absolute ltr:left-0 rtl:right-0 top-1/2 -translate-y-1/2 !text-[20px] md:!text-[24px]">
+            person
+          </i>
+          ورود به حساب کاربری
+        </span>
+      </Link>
+    );
+  };
 
   return (
     <>
@@ -96,17 +179,8 @@ const Navbar: React.FC = () => {
               </ul>
 
               <div className="flex items-center ltr:ml-auto rtl:mr-auto gap-[15px]">
-                <Link
-                  href="/authentication/enter-phone"
-                  className="inline-block lg:text-[15px] xl:text-[16px] py-[11px] px-[17px] bg-purple-600 text-white rounded-md transition-all font-medium border border-purple-600 hover:bg-purple-500 hover:border-purple-500"
-                >
-                  <span className="inline-block relative ltr:pl-[25px] rtl:pr-[25px] ltr:md:pl-[29px] rtl:md:pr-[29px]">
-                    <i className="material-symbols-outlined absolute ltr:left-0 rtl:right-0 top-1/2 -translate-y-1/2 !text-[20px] md:!text-[24px]">
-                      person
-                    </i>
-                    ورود به حساب کاربری
-                  </span>
-                </Link>
+                {/* دکمه ورود/خروج برای دسکتاپ */}
+                <AuthButton />
               </div>
             </div>
 
@@ -136,17 +210,8 @@ const Navbar: React.FC = () => {
               </ul>
 
               <div className="flex items-center gap-[15px] mt-[14px] md:mt-[16px]">
-                <Link
-                  href="/authentication/enter-phone"
-                  className="inline-block lg:text-[15px] xl:text-[16px] py-[11px] px-[17px] bg-purple-600 text-white rounded-md transition-all font-medium border border-purple-600 hover:bg-purple-500 hover:border-purple-500"
-                >
-                  <span className="inline-block relative ltr:pl-[25px] rtl:pr-[25px] ltr:md:pl-[29px] rtl:md:pr-[29px]">
-                    <i className="material-symbols-outlined absolute ltr:left-0 rtl:right-0 top-1/2 -translate-y-1/2 !text-[20px] md:!text-[24px]">
-                      person
-                    </i>
-                    ورود به حساب کاربری
-                  </span>
-                </Link>
+                {/* دکمه ورود/خروج برای موبایل */}
+                <AuthButton />
               </div>
             </div>
           </div>

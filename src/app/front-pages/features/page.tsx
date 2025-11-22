@@ -1,5 +1,6 @@
 "use client";
 
+import ProductsGrid from "@/components/eCommerce/ProductsGrid";
 import Cta from "@/components/FrontPage/Cta";
 import Features from "@/components/FrontPage/Features";
 import Footer from "@/components/FrontPage/Footer";
@@ -7,6 +8,7 @@ import LightDarkModeButton from "@/components/FrontPage/LightDarkModeButton";
 import Navbar from "@/components/FrontPage/Navbar";
 import OurTeam from "@/components/FrontPage/OurTeam";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Page() {
   return (
@@ -16,35 +18,30 @@ export default function Page() {
 
         <Navbar />
 
-        <div className="pt-[125px] md:pt-[145px] lg:pt-[185px] xl:pt-[195px] text-center">
-          <div className="container 2xl:max-w-[1320px] mx-auto px-[12px] relative z-[1]">
-            <h1 className="!mb-0 !leading-[1.2] !text-[32px] md:!text-[40px] lg:!text-[50px] xl:!text-[60px] -tracking-[.5px] md:-tracking-[1px] xl:-tracking-[1.5px]">
-              Features
-            </h1>
-            <div className="absolute bottom-0 -z-[1] ltr:-right-[30px] rtl:-left-[30px] blur-[250px]">
-              <Image
-                src="/images/front-pages/shape3.png"
-                alt="shape3"
-                width={685}
-                height={685}
-              />
-            </div>
-            <div className="absolute -top-[220px] -z-[1] ltr:-left-[50px] rtl:-right-[50px] blur-[150px]">
-              <Image
-                src="/images/front-pages/shape5.png"
-                alt="shape3"
-                width={658}
-                height={656}
-              />
-            </div>
+        <div className="pt-[50px] md:pt-[145px] lg:pt-[185px] xl:pt-[80px] text-center lg:px-10">
+          <div className="mb-[25px] md:flex items-center justify-between">
+            <ol className="breadcrumb mt-[12px] md:mt-0">
+              <li className="breadcrumb-item inline-block relative text-sm mx-[11px] ltr:first:ml-0 rtl:first:mr-0 ltr:last:mr-0 rtl:last:ml-0">
+                <Link
+                  href="/"
+                  className="inline-block relative ltr:pl-[22px] rtl:pr-[22px] transition-all hover:text-primary-500"
+                >
+                  <i className="material-symbols-outlined absolute ltr:left-0 rtl:right-0 !text-lg -mt-px text-primary-500 top-1/2 -translate-y-1/2">
+                    home
+                  </i>
+                  Home
+                </Link>
+              </li>
+              <li className="breadcrumb-item inline-block relative text-sm mx-[11px] ltr:first:ml-0 rtl:first:mr-0 ltr:last:mr-0 rtl:last:ml-0">
+                Shop
+              </li>
+            </ol>
+
+            <h5 className="!mb-0">Products</h5>
           </div>
         </div>
 
-        <Features />
-
-        <OurTeam />
-
-        <Cta />
+        <ProductsGrid />
 
         <Footer />
       </div>

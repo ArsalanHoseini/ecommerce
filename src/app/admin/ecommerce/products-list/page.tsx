@@ -5,7 +5,7 @@ export default function Page() {
   return (
     <>
           <div className="mb-[25px] md:flex items-center justify-between">
-        <ol className="breadcrumb mt-[12px] md:mt-0 flex flex-wrap">
+        <ol className=" mt-[12px] md:mt-0 flex flex-wrap">
           <li className="breadcrumb-item  relative text-sm mx-[11px] ltr:first:ml-0 rtl:first:mr-0 ltr:last:mr-0 rtl:last:ml-0 flex items-center">
             <Link
               href="/dashboard/ecommerce/"

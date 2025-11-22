@@ -51,7 +51,7 @@ const Header: React.FC<HeaderProps> = ({ toggleActive }) => {
               </button>
             </div>
 
-            <SearchForm />
+            {/* <SearchForm /> */}
 
             <AppsMenu />
           </div>

@@ -1235,21 +1235,29 @@ html[dir="rtl"] {
   }
 }
 
-/** Breadcrumb */
-.breadcrumb {
-  .breadcrumb-item {
-    &::before {
-      content: "\ea6e";
-      font-family: remixicon;
-      @apply font-normal text-lg top-1/2 -translate-y-1/2 absolute mt-px;
-    }
-    &:last-child {
-      &::before {
-        @apply hidden;
-      }
-    }
-  }
+
+/* ⚠️ نکته مهم: اگر جداکننده‌ها نمایش داده نمی‌شوند، احتمال قوی مشکل **عدم بارگذاری کامل فونت 'remixicon'** در پروژه Next.js شما است.
+   این کد بر اساس آیکون‌های فونت قالب Trezo نوشته شده و جهت پیکان را به درستی معکوس می‌کند (\ea6d).
+*/
+
+/* استایل پیکان جداکننده */
+.breadcrumb .breadcrumb-item::before {
+  /* استفاده از آیکون RemixIcon رو به راست (معکوس کردن جهت) */
+  content: "\ea6d"; 
+  font-family: remixicon; 
+  /* اضافه کردن رنگ ثابت برای اطمینان از دیده‌شدن */
+  color: #9ca3af; 
+  
+  /* @apply ها برای موقعیت‌دهی */
+  @apply font-normal text-lg top-1/2 -translate-y-1/2 absolute mt-px block z-10; 
 }
+
+/* پنهان کردن پیکان برای آخرین عنصر */
+.breadcrumb .breadcrumb-item:last-child::before {
+  @apply hidden;
+}
+
+/* تنظیمات موقعیت دهی LTR/RTL */
 @layer utilities {
   [dir="ltr"] .breadcrumb .breadcrumb-item::before {
     right: -22px;

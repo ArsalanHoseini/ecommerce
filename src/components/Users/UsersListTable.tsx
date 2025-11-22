@@ -1,258 +1,158 @@
 "use client";
 
-import React, { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
+import React, { useState, useEffect } from "react";
 
-const users = [
-  {
-    id: "JAN-158",
-    name: "مارسیا بیکر",
-    email: "marcia@trezo.com",
-    location: "",
-    phone: "+1 555-445-4455",
-    projects: 6,
-    joinDate: "01 دسامبر 2024",
-    image: "/images/users/user6.jpg",
-    role: 0,
-  },
-  {
-    id: "JAN-325",
-    name: "کارولین بارنز",
-    email: "barnes@trezo.com",
-    location: "شیکاگو",
-    phone: "+1 555-455-9966",
-    projects: 10,
-    joinDate: "02 دسامبر 2024",
-    image: "/images/users/user7.jpg",
-    role: 0,
-  },
-  {
-    id: "JAN-214",
-    name: "جیمز اسمیت",
-    email: "james@trezo.com",
-    location: "نیویورک",
-    phone: "+1 555-789-1234",
-    projects: 5,
-    joinDate: "03 دسامبر 2024",
-    image: "/images/users/user8.jpg",
-    role: 0,
-  },
-  {
-    id: "JAN-402",
-    name: "پاتریشیا جانسون",
-    email: "patricia@trezo.com",
-    location: "سان‌فرانسیسکو",
-    phone: "+1 555-321-9876",
-    projects: 7,
-    joinDate: "04 دسامبر 2024",
-    image: "/images/users/user9.jpg",
-    role: 0,
-  },
-  {
-    id: "JAN-518",
-    name: "رابرت براون",
-    email: "robert@trezo.com",
-    location: "لس آنجلس",
-    phone: "+1 555-654-3210",
-    projects: 12,
-    joinDate: "05 دسامبر 2024",
-    image: "/images/users/user10.jpg",
-    role: 0,
-  },
-  {
-    id: "JAN-628",
-    name: "امیلی دیویس",
-    email: "emily@trezo.com",
-    location: "سیاتل",
-    phone: "+1 555-159-7532",
-    projects: 9,
-    joinDate: "06 دسامبر 2024",
-    image: "/images/users/user11.jpg",
-    role: 0,
-  },
-  {
-    id: "JAN-731",
-    name: "مایکل ویلسون",
-    email: "michael@trezo.com",
-    location: "هیوستون",
-    phone: "+1 555-852-7413",
-    projects: 8,
-    joinDate: "07 دسامبر 2024",
-    image: "/images/users/user12.jpg",
-    role: 0,
-  },
-  {
-    id: "JAN-845",
-    name: "لیندا مور",
-    email: "linda@trezo.com",
-    location: "بوستون",
-    phone: "+1 555-369-2581",
-    projects: 11,
-    joinDate: "08 دسامبر 2024",
-    image: "/images/users/user13.jpg",
-    role: 0,
-  },
-  {
-    id: "JAN-956",
-    name: "دیوید مارتینز",
-    email: "david@trezo.com",
-    location: "میامی",
-    phone: "+1 555-951-7534",
-    projects: 6,
-    joinDate: "09 دسامبر 2024",
-    image: "/images/users/user14.jpg",
-    role: 0,
-  },
-  {
-    id: "JAN-102",
-    name: "سارا اندرسون",
-    email: "sarah@trezo.com",
-    location: "آستین",
-    phone: "+1 555-357-9514",
-    projects: 13,
-    joinDate: "10 دسامبر 2024",
-    image: "/images/users/user15.jpg",
-    role: 0,
-  },
-  {
-    id: "JAN-113",
-    name: "ریچارد توماس",
-    email: "richard@trezo.com",
-    location: "دنور",
-    phone: "+1 555-684-1593",
-    projects: 4,
-    joinDate: "11 دسامبر 2024",
-    image: "/images/users/user16.jpg",
-    role: 0,
-  },
-  {
-    id: "JAN-224",
-    name: "کارن وایت",
-    email: "karen@trezo.com",
-    location: "دالاس",
-    phone: "+1 555-742-9516",
-    projects: 14,
-    joinDate: "12 دسامبر 2024",
-    image: "/images/users/user17.jpg",
-    role: 0,
-  },
-  {
-    id: "JAN-335",
-    name: "کریستوفر هریس",
-    email: "chris@trezo.com",
-    location: "فینیکس",
-    phone: "+1 555-963-8521",
-    projects: 7,
-    joinDate: "13 دسامبر 2024",
-    image: "/images/users/user18.jpg",
-    role: 0,
-  },
-  {
-    id: "JAN-446",
-    name: "نانسی کلارک",
-    email: "nancy@trezo.com",
-    location: "سن دیگو",
-    phone: "+1 555-357-2486",
-    projects: 9,
-    joinDate: "14 دسامبر 2024",
-    image: "/images/users/user19.jpg",
-    role: 0,
-  },
-  {
-    id: "JAN-557",
-    name: "متیو لوئیس",
-    email: "matthew@trezo.com",
-    location: "پورتلند",
-    phone: "+1 555-753-6842",
-    projects: 10,
-    joinDate: "15 دسامبر 2024",
-    image: "/images/users/user20.jpg",
-    role: 0,
-  },
-  {
-    id: "JAN-668",
-    name: "باربارا واکر",
-    email: "barbara@trezo.com",
-    location: "فیلادلفیا",
-    phone: "+1 555-852-3574",
-    projects: 8,
-    joinDate: "16 دسامبر 2024",
-    image: "/images/users/user21.jpg",
-    role: 0,
-  },
-  {
-    id: "JAN-779",
-    name: "استیون هال",
-    email: "steven@trezo.com",
-    location: "لاس وگاس",
-    phone: "+1 555-741-3698",
-    projects: 11,
-    joinDate: "17 دسامبر 2024",
-    image: "/images/users/user22.jpg",
-    role: 0,
-  },
-  {
-    id: "JAN-880",
-    name: "جسیکا یانگ",
-    email: "jessica@trezo.com",
-    location: "اورلاندو",
-    phone: "+1 555-951-2587",
-    projects: 5,
-    joinDate: "18 دسامبر 2024",
-    image: "/images/users/user23.jpg",
-    role: 1,
-  }, // ادمین
-  {
-    id: "JAN-991",
-    name: "دنیل کینگ",
-    email: "daniel@trezo.com",
-    location: "مینیاپولیس",
-    phone: "+1 555-357-6548",
-    projects: 12,
-    joinDate: "19 دسامبر 2024",
-    image: "/images/users/user24.jpg",
-    role: 1,
-  }, // ادمین
-  {
-    id: "JAN-105",
-    name: "آلیس مورگان",
-    email: "alice@trezo.com",
-    location: "لاس آنجلس",
-    phone: "+1 555-258-9631",
-    projects: 9,
-    joinDate: "20 دسامبر 2024",
-    image: "/images/users/user25.jpg",
-    role: 0,
-  },
-  {
-    id: "JAN-116",
-    name: "جان آدامز",
-    email: "john@trezo.com",
-    location: "نیویورک",
-    phone: "+1 555-147-2583",
-    projects: 7,
-    joinDate: "21 دسامبر 2024",
-    image: "/images/users/user26.jpg",
-    role: 0,
-  },
-];
+// --- رابط‌های تعریف داده ---
+
+// 1. رابط داده‌ای که از API دریافت می‌شود
+interface ApiUser {
+  id: number;
+  mobile: string;
+  name: string;
+  role: string; // "admin" یا "user"
+  createdAt: string; // فرمت ISO Date
+  updatedAt: string;
+}
+
+// 2. رابط داده‌ای که کامپوننت انتظار دارد (بر اساس قالب)
+interface ComponentUser {
+  id: string; // شناسه برای استفاده در لینک‌ها و key
+  name: string;
+  email: string; // در API موجود نیست
+  phone: string; // همان mobile در API
+  image: string; // در API موجود نیست
+  role: number; // 0 برای مشتری، 1 برای ادمین
+  walletBalance: number | null; // در API موجود نیست
+  joinDate: string; // فرمت شده createdAt
+}
+
+// --- آبجکت‌های کمکی ---
+
+// آبجکت کمکی برای تبدیل شناسه نقش به نام خوانا
+// **تغییر: اضافه شدن -1 برای نمایش 'همه' در فیلتر**
+const roleMap: { [key: number]: string } = {
+  "-1": "دیدن همه", // **مقدار جدید برای فیلتر کردن همه نقش‌ها**
+  0: "مشتری",
+  1: "ادمین",
+  2: "مدیریت پروژه",
+  3: "تحلیل داده",
+  4: "تیم ورک",
+  5: "توسعه وب",
+};
+
+/**
+ * تابع کمکی برای تبدیل نقش دریافتی از API (رشته)
+ * به شناسه نقش مورد انتظار کامپوننت (عدد)
+ */
+const apiRoleToComponentRole = (apiRole: string): number => {
+  const roleLower = apiRole.toLowerCase();
+  if (roleLower === "admin") {
+    return 1; // 1 = ادمین
+  }
+  if (roleLower === "user") {
+    return 0; // 0 = مشتری
+  }
+  return 0; // پیش‌فرض
+};
+
+/**
+ * تابع کمکی برای فرمت کردن تاریخ ISO (از API)
+ * به فرمت فارسی مورد انتظار قالب
+ */
+const formatJoinDate = (isoDate: string): string => {
+  try {
+    const date = new Date(isoDate);
+    // فرمت: "01 دسامبر 2024"
+    return date.toLocaleDateString("fa-IR", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    });
+  } catch (e) {
+    return "تاریخ نامعتبر"; // بازگشت در صورت خطا
+  }
+};
+
+// --- کامپوننت اصلی ---
 
 const UsersListTable: React.FC = () => {
+  // --- State های مدیریت داده ---
+  const [users, setUsers] = useState<ComponentUser[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null); // State برای مدیریت حذف
+
+  // --- State های موجود (UI) ---
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
-  const [roleFilter, setRoleFilter] = useState(0); // عدد پیش‌فرض: مشتری
+  // **تغییر: مقدار اولیه فیلتر نقش به -1 (دیدن همه)**
+  const [roleFilter, setRoleFilter] = useState(-1); 
 
-  // فیلتر بر اساس جستجو و سطح دسترسی
-  const filteredUsers = users.filter(
-    (user) =>
-      (user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        user.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        user.phone.toLowerCase().includes(searchQuery.toLowerCase())) &&
-      user.role === roleFilter
-  );
+  // --- دریافت داده از API ---
+  useEffect(() => {
+    const fetchUsers = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const apiUrl = process.env.NEXT_PUBLIC_GET_USERS_API_URL;
+        if (!apiUrl) {
+          throw new Error(
+            "متغیر NEXT_PUBLIC_GET_USERS_API_URL تعریف نشده است"
+          );
+        }
+
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+          throw new Error("خطا در ارتباط با سرور");
+        }
+
+        const result = await response.json();
+
+        if (result.statusCode === 200 && Array.isArray(result.data)) {
+          // *** مرحله تبدیل داده (Adapter) ***
+          const transformedUsers: ComponentUser[] = result.data.map(
+            (apiUser: ApiUser) => ({
+              id: apiUser.id.toString(),
+              name: apiUser.name || "بدون نام",
+              phone: apiUser.mobile || "اطلاعات دریافت نشد",
+              role: apiRoleToComponentRole(apiUser.role),
+              joinDate: formatJoinDate(apiUser.createdAt),
+              email: "اطلاعات دریافت نشد",
+              walletBalance: null,
+              image: "/images/users/user-placeholder.jpg",
+            })
+          );
+          setUsers(transformedUsers);
+        } else {
+          throw new Error(result.message || "ساختار داده دریافتی نامعتبر است");
+        }
+      } catch (err: any) {
+        setError(err.message || "یک خطای ناشناخته رخ داد");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+  // --- منطق فیلتر و برگه‌بندی (Pagination) ---
+
+  const filteredUsers = users.filter((user) => {
+    const query = searchQuery.toLowerCase();
+    const matchesSearch =
+      user.id.toLowerCase().includes(query) ||
+      user.name.toLowerCase().includes(query) ||
+      user.email.toLowerCase().includes(query) ||
+      user.phone.toLowerCase().includes(query);
+      
+    // **تغییر: اگر roleFilter برابر با -1 باشد، همه نقش‌ها را شامل می‌شود**
+    const matchesRole = roleFilter === -1 || user.role === roleFilter;
+    
+    return matchesSearch && matchesRole;
+  });
 
   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -269,33 +169,215 @@ const UsersListTable: React.FC = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
-  const handleDelete = (id: string) => {
+  // --- توابع کمکی (Helpers) ---
+
+  // تابع کمکی برای استایل دهی به نقش‌ها
+  const getRoleBadge = (roleId: number) => {
+    // از آنجایی که roleMap کلیدهای رشته‌ای (برای -1) دارد، تبدیل کلید عددی به رشته ضروری است
+    const roleName = roleMap[roleId] || roleMap[roleId.toString() as unknown as number] || "ناشناخته";
+    
+    // در این قسمت، برای جلوگیری از نمایش "دیدن همه" به عنوان یک نقش واقعی، باید بررسی شود.
+    if (roleId === -1) {
+        // این حالت نباید در جدول اتفاق بیفتد، اما برای ایمنی، یک متن خالی برگردانده می‌شود
+        return null; 
+    }
+      
+    let className = "px-2 py-0.5 rounded-full text-xs font-medium ";
+    switch (roleId) {
+      case 1: // ادمین
+        className +=
+          "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200";
+        break;
+      case 0: // مشتری
+        className +=
+          "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200";
+        break;
+      default:
+        className +=
+          "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200";
+    }
+    return <span className={className}>{roleName}</span>;
+  };
+
+  /**
+   * تابع حذف کاربر (متصل به API)
+   */
+  const handleDelete = async (id: string) => {
     const user = users.find((u) => u.id === id);
-    if (user) {
-      alert(`حذف کاربر  < ${user.name} > با شناسه: ${id} (فعلاً فقط نمایش)`);
+    if (!user) return;
+
+    // 1. پیام تایید
+    const confirmed = window.confirm(
+      `آیا از حذف کاربر «${user.name}» با شناسه ${id} مطمئن هستید؟`
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    // 2. تنظیم وضعیت بارگیری
+    setDeletingId(id);
+
+    try {
+      // 3. دریافت آدرس API
+      const apiUrl = process.env.NEXT_PUBLIC_DELETE_USER_API_URL;
+      if (!apiUrl) {
+        throw new Error(
+          "متغیر NEXT_PUBLIC_DELETE_USER_API_URL تعریف نشده است"
+        );
+      }
+
+      const finalUrl = apiUrl.replace("{id}", id);
+
+      // 4. فراخوانی API
+      const response = await fetch(finalUrl, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          // 'Authorization': `Bearer ${your_token_here}`
+        },
+      });
+
+      // 5. مدیریت پاسخ
+      if (response.ok) {
+        alert(`کاربر «${user.name}» با موفقیت حذف شد.`);
+
+        // 5b. به‌روزرسانی UI
+        setUsers((currentUsers) =>
+          currentUsers.filter((u) => u.id !== id)
+        );
+
+        // 5c. مدیریت برگه‌بندی پس از حذف
+        const totalAfterDelete = filteredUsers.length - 1;
+        const newTotalPages = Math.ceil(totalAfterDelete / itemsPerPage);
+        
+        if (currentPage > newTotalPages && newTotalPages > 0) {
+            setCurrentPage(newTotalPages);
+        } else if (totalAfterDelete === 0) {
+            setCurrentPage(1);
+        }
+        
+      } else {
+        const errorData = await response.json();
+        throw new Error(
+          errorData.message || "سرور قادر به حذف این کاربر نبود"
+        );
+      }
+    } catch (err: any) {
+      // 6. مدیریت خطای کلی
+      alert(`خطا: ${err.message || "عملیات حذف با شکست مواجه شد"}`);
+    } finally {
+      // 7. پاک کردن وضعیت بارگیری
+      setDeletingId(null);
     }
   };
 
+  /**
+   * تابع خروجی CSV (اکسل)
+   */
+  const exportToCSV = () => {
+    const headers = [
+      "شناسه",
+      "نام",
+      "ایمیل",
+      "تلفن",
+      "تاریخ عضویت",
+      "کیف پول (تومان)",
+      "سطح دسترسی",
+    ].join(",");
+
+    const csvRows = filteredUsers.map((user) => {
+      // از آنجایی که roleMap کلیدهای رشته‌ای (برای -1) دارد، تبدیل کلید عددی به رشته ضروری است.
+      // اما در اینج، user.role همیشه یک عدد 0 یا 1 یا... است و -1 نیست.
+      const roleName = roleMap[user.role] || "ناشناخته";
+      const wallet =
+        user.walletBalance !== null
+          ? user.walletBalance.toString()
+          : "0";
+
+      return [
+        `#${user.id}`,
+        user.name,
+        user.email,
+        user.phone,
+        user.joinDate,
+        wallet,
+        roleName,
+      ].join(",");
+    });
+
+    const csvContent = [headers, ...csvRows].join("\n");
+
+    const blob = new Blob(
+      [new Uint8Array([0xef, 0xbb, 0xbf]), csvContent],
+      { type: "text/csv;charset=utf-8;" }
+    );
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute(
+      "download",
+      `Users-List-${new Date().toISOString().slice(0, 10)}.csv`
+    );
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  // --- مدیریت وضعیت‌های بارگیری و خطا ---
+
+  if (isLoading) {
+    return (
+      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md text-center">
+        <p className="text-black dark:text-white">
+          در حال بارگیری اطلاعات کاربران...
+        </p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md text-center">
+        <p className="text-danger-500">خطا: {error}</p>
+        <p className="text-gray-500 mt-2">
+          لطفاً اتصال اینترنت خود و آدرس API را بررسی کنید.
+        </p>
+      </div>
+    );
+  }
+
+  // --- رندر نهایی کامپوننت ---
+
   return (
     <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
+      {/* هدر کارت: فیلترها و دکمه‌ها */}
       <div className="trezo-card-header mb-[20px] md:mb-[25px] sm:flex items-center justify-between gap-3 flex-wrap">
         <div className="flex gap-2 items-center">
           {/* فیلتر سطح دسترسی */}
           <select
             className="h-[36px] rounded-md border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-2 text-black dark:text-white"
             value={roleFilter}
-            onChange={(e) => setRoleFilter(Number(e.target.value))}
+            onChange={(e) => {
+              // **تغییر: تبدیل مقدار به عدد**
+              setRoleFilter(Number(e.target.value)); 
+              setCurrentPage(1);
+            }}
           >
-            <option value={0}>مشتری</option>
-            <option value={1}>ادمین</option>
-            <option value={2}>مدیریت پروژه</option>
-            <option value={3}>تحلیل داده</option>
-            <option value={4}>تیم ورک</option>
-            <option value={5}>توسعه وب</option>
+            {/* **تغییر: تبدیل Object.entries به صورت صحیح برای roleMap** */}
+            {Object.entries(roleMap).map(([key, value]) => (
+              <option key={key} value={key}>
+                {value}
+              </option>
+            ))}
           </select>
 
           {/* جستجوی کاربران */}
-          <form className="relative sm:w-[265px]">
+          <form
+            className="relative sm:w-[265px]"
+            onSubmit={(e) => e.preventDefault()}
+          >
             <label className="leading-none absolute ltr:left-[13px] rtl:right-[13px] text-black dark:text-white mt-px top-1/2 -translate-y-1/2">
               <i className="material-symbols-outlined !text-[20px]">search</i>
             </label>
@@ -303,15 +385,34 @@ const UsersListTable: React.FC = () => {
               type="text"
               placeholder="جستجوی کاربر..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setCurrentPage(1);
+              }}
               className="bg-gray-50 border border-gray-50 h-[36px] text-xs rounded-md w-full block text-black pt-[11px] pb-[12px] ltr:pl-[38px] rtl:pr-[38px] ltr:pr-[13px] rtl:pl-[13px] placeholder:text-gray-500 outline-0 dark:bg-[#15203c] dark:text-white dark:border-[#15203c] dark:placeholder:text-gray-400"
             />
           </form>
         </div>
 
+        {/* دکمه‌های عملیاتی */}
+        <div className="flex gap-2 items-center mt-3 sm:mt-0">
+          <button
+            onClick={exportToCSV}
+            disabled={filteredUsers.length === 0}
+            className="inline-block transition-all rounded-md font-medium px-[13px] py-[6px] text-success-500 border border-success-500 hover:bg-success-500 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <span className="inline-block relative ltr:pl-[22px] rtl:pr-[22px]">
+              <i className="material-symbols-outlined !text-[22px] absolute ltr:-left-[4px] rtl:-right-[4px] top-1/2 -translate-y-1/2">
+                download
+              </i>
+              خروجی اکسل
+            </span>
+          </button>
+        </div>
+
         <div>
           <Link
-            href="/users/add-user"
+            href="/admin/users/add-user"
             className="inline-block transition-all rounded-md font-medium px-[13px] py-[6px] text-primary-500 border border-primary-500 hover:bg-primary-500 hover:text-white"
           >
             <span className="inline-block relative ltr:pl-[22px] rtl:pr-[22px]">
@@ -343,10 +444,13 @@ const UsersListTable: React.FC = () => {
                   تلفن
                 </th>
                 <th className="px-[20px] py-[11px] bg-primary-50 dark:bg-[#15203c]">
-                  سفارشات
+                  تاریخ عضویت
                 </th>
                 <th className="px-[20px] py-[11px] bg-primary-50 dark:bg-[#15203c]">
-                  تاریخ عضویت
+                  کیف پول
+                </th>
+                <th className="px-[20px] py-[11px] bg-primary-50 dark:bg-[#15203c]">
+                  سطح دسترسی
                 </th>
                 <th className="px-[20px] py-[11px] bg-primary-50 dark:bg-[#15203c]">
                   عملیات
@@ -358,17 +462,19 @@ const UsersListTable: React.FC = () => {
               {currentUsers.map((user) => (
                 <tr key={user.id}>
                   <td className="px-[20px] py-[17px] border-b border-gray-100 dark:border-[#172036]">
-                    #{user.id}
+                    {user.id}
                   </td>
                   <td className="px-[20px] py-[17px] border-b border-gray-100 dark:border-[#172036]">
                     <div className="flex items-center">
-                      <div className="w-[40px] rounded-full">
-                        <Image
+                      <div className="w-[40px] h-[40px] rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700">
+                        <img
                           src={user.image}
-                          className="inline-block rounded-full"
+                          className="inline-block w-full h-full object-cover"
                           alt="تصویر کاربر"
-                          width={40}
-                          height={40}
+                          onError={(e) => {
+                            ;(e.target as HTMLImageElement).src =
+                              "/images/admin.png";
+                          }}
                         />
                       </div>
                       <div className="ltr:ml-[12px] rtl:mr-[12px]">
@@ -383,10 +489,15 @@ const UsersListTable: React.FC = () => {
                     {user.phone}
                   </td>
                   <td className="px-[20px] py-[17px] border-b border-gray-100 dark:border-[#172036]">
-                    {user.projects}
+                    {user.joinDate}
                   </td>
                   <td className="px-[20px] py-[17px] border-b border-gray-100 dark:border-[#172036]">
-                    {user.joinDate}
+                    {user.walletBalance !== null
+                      ? `${user.walletBalance.toLocaleString("fa-IR")} تومان`
+                      : "اطلاعات دریافت نشد"}
+                  </td>
+                  <td className="px-[20px] py-[17px] border-b border-gray-100 dark:border-[#172036]">
+                    {getRoleBadge(user.role)}
                   </td>
                   <td className="px-[20px] py-[17px] border-b border-gray-100 dark:border-[#172036]">
                     <div className="flex items-center gap-[9px]">
@@ -397,6 +508,7 @@ const UsersListTable: React.FC = () => {
                           </i>
                         </button>
                       </Link>
+
                       <Link href={`/admin/users/edit/${user.id}`}>
                         <button className="text-gray-500 dark:text-gray-400">
                           <i className="material-symbols-outlined !text-md">
@@ -404,64 +516,83 @@ const UsersListTable: React.FC = () => {
                           </i>
                         </button>
                       </Link>
+
+                      {/* دکمه حذف به‌روزرسانی شده */}
                       <button
-                        className="text-danger-500"
+                        className="text-danger-500 disabled:opacity-50 disabled:cursor-wait"
                         onClick={() => handleDelete(user.id)}
+                        disabled={deletingId === user.id}
                       >
                         <i className="material-symbols-outlined !text-md">
-                          delete
+                          {deletingId === user.id ? "sync" : "delete"}
                         </i>
                       </button>
                     </div>
                   </td>
                 </tr>
               ))}
+
+              {/* نمایش پیام در صورت خالی بودن */}
+              {filteredUsers.length === 0 && (
+                <tr>
+                  <td
+                    colSpan={8}
+                    className="text-center p-5 text-gray-500"
+                  >
+                    {users.length === 0
+                      ? "هیچ کاربری در سیستم ثبت نشده است."
+                      : "هیچ کاربری با این فیلترها یافت نشد."}
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
 
         {/* پیجینگ */}
-        <div className="px-[20px] md:px-[25px] pt-[12px] md:pt-[14px] sm:flex sm:items-center justify-between">
-          <p className="!mb-0 !text-sm">
-            نمایش {startIndex + 1} تا{" "}
-            {Math.min(startIndex + itemsPerPage, filteredUsers.length)} از{" "}
-            {filteredUsers.length} کاربر
-          </p>
-          <ol className="mt-[10px] sm:mt-0 flex gap-1">
-            <li>
-              <button
-                onClick={handlePrevPage}
-                disabled={currentPage === 1}
-                className="w-[31px] h-[31px] rounded-md border border-gray-100 dark:border-[#172036] hover:bg-primary-500 hover:text-white"
-              >
-                <i className="material-symbols-outlined">chevron_right</i>
-              </button>
-            </li>
-            {[...Array(totalPages)].map((_, index) => (
-              <li key={index}>
+        {totalPages > 1 && (
+          <div className="px-[20px] md:px-[25px] pt-[12px] md:pt-[14px] sm:flex sm:items-center justify-between">
+            <p className="!mb-0 !text-sm">
+              نمایش {filteredUsers.length > 0 ? startIndex + 1 : 0} تا{" "}
+              {Math.min(startIndex + itemsPerPage, filteredUsers.length)} از{" "}
+              {filteredUsers.length} کاربر
+            </p>
+            <ol className="mt-[10px] sm:mt-0 flex gap-1">
+              <li>
                 <button
-                  className={`w-[31px] h-[31px] rounded-md border border-gray-100 dark:border-[#172036] ${
-                    currentPage === index + 1
-                      ? "bg-primary-500 text-white border-primary-500"
-                      : ""
-                  }`}
-                  onClick={() => setCurrentPage(index + 1)}
+                  onClick={handlePrevPage}
+                  disabled={currentPage === 1}
+                  className="w-[31px] h-[31px] rounded-md border border-gray-100 dark:border-[#172036] hover:bg-primary-500 hover:text-white disabled:opacity-50"
                 >
-                  {index + 1}
+                  <i className="material-symbols-outlined">chevron_right</i>
                 </button>
               </li>
-            ))}
-            <li>
-              <button
-                onClick={handleNextPage}
-                disabled={currentPage === totalPages}
-                className="w-[31px] h-[31px] rounded-md border border-gray-100 dark:border-[#172036] hover:bg-primary-500 hover:text-white"
-              >
-                <i className="material-symbols-outlined">chevron_left</i>
-              </button>
-            </li>
-          </ol>
-        </div>
+              {[...Array(totalPages)].map((_, index) => (
+                <li key={index}>
+                  <button
+                    className={`w-[31px] h-[31px] rounded-md border border-gray-100 dark:border-[#172036] ${
+                      currentPage === index + 1
+                        ? "bg-primary-500 text-white border-primary-500"
+                        : "hover:bg-primary-500 hover:text-white"
+                    }`}
+                    onClick={() => setCurrentPage(index + 1)}
+                  >
+                    {index + 1}
+                  </button>
+                </li>
+              ))}
+              <li>
+                <button
+                  onClick={handleNextPage}
+                  disabled={currentPage === totalPages}
+                  className="w-[31px] h-[31px] rounded-md border border-gray-100 dark:border-[#172036] hover:bg-primary-500 hover:text-white disabled:opacity-50"
+                >
+                  <i className="material-symbols-outlined">chevron_left</i>
+                </button>
+              </li>
+            </ol>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -379,31 +379,25 @@ const Contacts: React.FC = () => {
                     </div>
                   </th>
                   <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] md:ltr:first:pl-[25px] md:rtl:first:pr-[25px] ltr:first:pr-0 rtl:first:pl-0 bg-primary-50 dark:bg-[#15203c] whitespace-nowrap">
-                    ID
+                    شناسه
                   </th>
                   <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] md:ltr:first:pl-[25px] md:rtl:first:pr-[25px] ltr:first:pr-0 rtl:first:pl-0 bg-primary-50 dark:bg-[#15203c] whitespace-nowrap">
-                    User
+                    کاربر
                   </th>
                   <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] md:ltr:first:pl-[25px] md:rtl:first:pr-[25px] ltr:first:pr-0 rtl:first:pl-0 bg-primary-50 dark:bg-[#15203c] whitespace-nowrap">
-                    Email
+                    ایمیل
                   </th>
                   <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] md:ltr:first:pl-[25px] md:rtl:first:pr-[25px] ltr:first:pr-0 rtl:first:pl-0 bg-primary-50 dark:bg-[#15203c] whitespace-nowrap">
-                    Phone
+                    شماره تماس
                   </th>
                   <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] md:ltr:first:pl-[25px] md:rtl:first:pr-[25px] ltr:first:pr-0 rtl:first:pl-0 bg-primary-50 dark:bg-[#15203c] whitespace-nowrap">
-                    Last Contacted
+                    آخرین سفارش
                   </th>
                   <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] md:ltr:first:pl-[25px] md:rtl:first:pr-[25px] ltr:first:pr-0 rtl:first:pl-0 bg-primary-50 dark:bg-[#15203c] whitespace-nowrap">
-                    Company
+                     تعداد سفارشات
                   </th>
                   <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] md:ltr:first:pl-[25px] md:rtl:first:pr-[25px] ltr:first:pr-0 rtl:first:pl-0 bg-primary-50 dark:bg-[#15203c] whitespace-nowrap">
-                    Lead Score
-                  </th>
-                  <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] md:ltr:first:pl-[25px] md:rtl:first:pr-[25px] ltr:first:pr-0 rtl:first:pl-0 bg-primary-50 dark:bg-[#15203c] whitespace-nowrap">
-                    Status
-                  </th>
-                  <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] md:ltr:first:pl-[25px] md:rtl:first:pr-[25px] ltr:first:pr-0 rtl:first:pl-0 bg-primary-50 dark:bg-[#15203c] whitespace-nowrap">
-                    Action
+                    وضعیت
                   </th>
                 </tr>
               </thead>
@@ -464,12 +458,6 @@ const Contacts: React.FC = () => {
 
                     <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[17px] md:ltr:first:pl-[25px] md:rtl:first:pr-[25px] ltr:first:pr-0 rtl:first:pl-0 border-b border-gray-100 dark:border-[#172036]">
                       <span className="text-gray-500 dark:text-gray-400">
-                        {contact.company}
-                      </span>
-                    </td>
-
-                    <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[17px] md:ltr:first:pl-[25px] md:rtl:first:pr-[25px] ltr:first:pr-0 rtl:first:pl-0 border-b border-gray-100 dark:border-[#172036]">
-                      <span className="text-gray-500 dark:text-gray-400">
                         {contact.leadScore}
                       </span>
                     </td>
@@ -484,65 +472,6 @@ const Contacts: React.FC = () => {
                       >
                         {contact.status}
                       </span>
-                    </td>
-
-                    <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[17px] md:ltr:first:pl-[25px] md:rtl:first:pr-[25px] ltr:first:pr-0 rtl:first:pl-0 border-b border-gray-100 dark:border-[#172036]">
-                      <div className="flex items-center gap-[9px]">
-                        <div className="relative group">
-                          <button
-                            type="button"
-                            className="text-primary-500 leading-none"
-                          >
-                            <i className="material-symbols-outlined !text-md">
-                              visibility
-                            </i>
-                          </button>
-
-                          {/* Tooltip */}
-                          <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                            View
-                            {/* Arrow */}
-                            <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-white dark:border-[#172036] border-t-gray-800 dark:border-t-gray-800"></div>
-                          </div>
-                        </div>
-
-                        <div className="relative group">
-                          <button
-                            type="button"
-                            className="text-gray-500 leading-none"
-                          >
-                            <i className="material-symbols-outlined !text-md">
-                              edit
-                            </i>
-                          </button>
-
-                          {/* Tooltip */}
-                          <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                            Edit
-                            {/* Arrow */}
-                            <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-white dark:border-[#172036] border-t-gray-800 dark:border-t-gray-800"></div>
-                          </div>
-                        </div>
-
-                        <div className="relative group">
-                          <button
-                            type="button"
-                            className="text-danger-500 leading-none"
-                            onClick={() => handleDeleteContact(contact.id)}
-                          >
-                            <i className="material-symbols-outlined !text-md">
-                              delete
-                            </i>
-                          </button>
-
-                          {/* Tooltip */}
-                          <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                            Delete
-                            {/* Arrow */}
-                            <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-white dark:border-[#172036] border-t-gray-800 dark:border-t-gray-800"></div>
-                          </div>
-                        </div>
-                      </div>
                     </td>
                   </tr>
                 ))}
@@ -565,7 +494,7 @@ const Contacts: React.FC = () => {
                 >
                   <span className="opacity-0">0</span>
                   <i className="material-symbols-outlined left-0 right-0 absolute top-1/2 -translate-y-1/2">
-                    chevron_left
+                    chevron_right
                   </i>
                 </button>
               </li>
@@ -594,7 +523,7 @@ const Contacts: React.FC = () => {
                 >
                   <span className="opacity-0">0</span>
                   <i className="material-symbols-outlined left-0 right-0 absolute top-1/2 -translate-y-1/2">
-                    chevron_right
+                    chevron_left
                   </i>
                 </button>
               </li>

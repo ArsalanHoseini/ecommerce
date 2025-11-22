@@ -12,51 +12,51 @@ type App = {
 
 const apps: App[] = [
   {
-    name: "Figma",
-    url: "https://www.figma.com/",
-    icon: "/images/icons/figma.svg",
+    name: "Home",
+    url: "/",
+    icon: "/images/icons/home.svg",
   },
-  {
-    name: "Dribbble",
-    url: "https://dribbble.com/",
-    icon: "/images/icons/dribbble.svg",
-  },
-  {
-    name: "Spotify",
-    url: "https://open.spotify.com/",
-    icon: "/images/icons/spotify.svg",
-  },
-  {
-    name: "Gitlab",
-    url: "https://gitlab.com/",
-    icon: "/images/icons/gitlab.svg",
-  },
-  {
-    name: "GDrive",
-    url: "https://drive.google.com/",
-    icon: "/images/icons/google-drive.svg",
-  },
-  {
-    name: "Trello",
-    url: "https://trello.com/",
-    icon: "/images/icons/trello.svg",
-  },
-  { name: "Slack", url: "https://slack.com/", icon: "/images/icons/slack.svg" },
-  {
-    name: "Pinterest",
-    url: "https://www.pinterest.com/",
-    icon: "/images/icons/pinterest.svg",
-  },
-  {
-    name: "Facebook",
-    url: "https://www.facebook.com/",
-    icon: "/images/icons/facebook.svg",
-  },
-  {
-    name: "LinkedIn",
-    url: "https://www.linkedin.com/",
-    icon: "/images/icons/linkedin.svg",
-  },
+  // {
+  //   name: "Dribbble",
+  //   url: "https://dribbble.com/",
+  //   icon: "/images/icons/dribbble.svg",
+  // },
+  // {
+  //   name: "Spotify",
+  //   url: "https://open.spotify.com/",
+  //   icon: "/images/icons/spotify.svg",
+  // },
+  // {
+  //   name: "Gitlab",
+  //   url: "https://gitlab.com/",
+  //   icon: "/images/icons/gitlab.svg",
+  // },
+  // {
+  //   name: "GDrive",
+  //   url: "https://drive.google.com/",
+  //   icon: "/images/icons/google-drive.svg",
+  // },
+  // {
+  //   name: "Trello",
+  //   url: "https://trello.com/",
+  //   icon: "/images/icons/trello.svg",
+  // },
+  // { name: "Slack", url: "https://slack.com/", icon: "/images/icons/slack.svg" },
+  // {
+  //   name: "Pinterest",
+  //   url: "https://www.pinterest.com/",
+  //   icon: "/images/icons/pinterest.svg",
+  // },
+  // {
+  //   name: "Facebook",
+  //   url: "https://www.facebook.com/",
+  //   icon: "/images/icons/facebook.svg",
+  // },
+  // {
+  //   name: "LinkedIn",
+  //   url: "https://www.linkedin.com/",
+  //   icon: "/images/icons/linkedin.svg",
+  // },
 ];
 
 const AppsMenu: React.FC = () => {

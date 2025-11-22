@@ -153,67 +153,100 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
             </span>
 
             <div className="accordion-item rounded-md text-black dark:text-white mb-[5px] whitespace-nowrap">
-              <Link
-                href="/admin/ecommerce/products-list/"
-                className="flex items-center transition-all py-[9px] ltr:pl-[14px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] rounded-md font-medium w-full hover:bg-gray-50 text-left dark:hover:bg-[#15203c]"
+              <button
+                className={`accordion-button toggle flex items-center transition-all py-[9px] ltr:pl-[14px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] rounded-md font-medium w-full relative hover:bg-gray-50 text-left dark:hover:bg-[#15203c] ${
+                  openIndex === 2 ? "open" : ""
+                }`}
+                type="button"
+                onClick={() => toggleAccordion(2)}
               >
                 <i className="material-symbols-outlined transition-all text-gray-500 dark:text-gray-400 ltr:mr-[7px] rtl:ml-[7px] !text-[22px] leading-none relative -top-px">
                   shopping_cart
                 </i>
-                <span className="title leading-none"> لیست محصولات </span>
-              </Link>
-            </div>
+                <span className="title leading-none">فروشگاه</span>
+                {/* <span className="rounded-full font-medium inline-block text-center w-[20px] h-[20px] text-[11px] leading-[20px] text-success-500 bg-success-50 dark:bg-[#ffffff14] ltr:ml-auto rtl:mr-auto">
+                  
+                </span> */}
+              </button>
 
-            <div className="accordion-item rounded-md text-black dark:text-white mb-[5px] whitespace-nowrap">
-              <Link
-                href="/admin/ecommerce/orders/"
-                className="flex items-center transition-all py-[9px] ltr:pl-[14px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] rounded-md font-medium w-full hover:bg-gray-50 text-left dark:hover:bg-[#15203c]"
+              <div
+                className={`accordion-collapse ${
+                  openIndex === 2 ? "open" : "hidden"
+                }`}
               >
-                <i className="material-symbols-outlined transition-all text-gray-500 dark:text-gray-400 ltr:mr-[7px] rtl:ml-[7px] !text-[22px] leading-none relative -top-px">
-                  shopping_cart
-                </i>
-                <span className="title leading-none">سفارشات</span>
-              </Link>
-            </div>
+                <div className="pt-[4px]">
+                  <ul className="sidebar-sub-menu">
+                    <li className="sidemenu-item mb-[4px] last:mb-0">
+                      <Link
+                        href="/admin/ecommerce/products-list/"
+                        className={`sidemenu-link rounded-md flex items-center relative transition-all font-medium text-gray-500 dark:text-gray-400 py-[9px] ltr:pl-[38px] ltr:pr-[30px] rtl:pr-[38px] rtl:pl-[30px] hover:text-primary-500 hover:bg-primary-50 w-full text-left dark:hover:bg-[#15203c] ${
+                          pathname === "/admin/ecommerce/products-list/"
+                            ? "active"
+                            : ""
+                        }`}
+                      >
+                        لیست محصولات
+                      </Link>
+                    </li>
 
-            <div className="accordion-item rounded-md text-black dark:text-white mb-[5px] whitespace-nowrap">
-              <Link
-                href="/admin/ecommerce/categories/"
-                className="flex items-center transition-all py-[9px] ltr:pl-[14px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] rounded-md font-medium w-full hover:bg-gray-50 text-left dark:hover:bg-[#15203c]"
-              >
-                <i className="material-symbols-outlined transition-all text-gray-500 dark:text-gray-400 ltr:mr-[7px] rtl:ml-[7px] !text-[22px] leading-none relative -top-px">
-                  shopping_cart
-                </i>
-                <span className="title leading-none">Categories</span>
-              </Link>
-            </div>
+                    <li className="sidemenu-item mb-[4px] last:mb-0">
+                      <Link
+                        href="/admin/ecommerce/orders/"
+                        className={`sidemenu-link rounded-md flex items-center relative transition-all font-medium text-gray-500 dark:text-gray-400 py-[9px] ltr:pl-[38px] ltr:pr-[30px] rtl:pr-[38px] rtl:pl-[30px] hover:text-primary-500 hover:bg-primary-50 w-full text-left dark:hover:bg-[#15203c] ${
+                          pathname === "/admin/ecommerce/orders/"
+                            ? "active"
+                            : ""
+                        }`}
+                      >
+                        سفارشات
+                      </Link>
+                    </li>
 
-            <div className="accordion-item rounded-md text-black dark:text-white mb-[5px] whitespace-nowrap">
-              <Link
-                href="/admin/ecommerce/reviews/"
-                className="flex items-center transition-all py-[9px] ltr:pl-[14px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] rounded-md font-medium w-full hover:bg-gray-50 text-left dark:hover:bg-[#15203c]"
-              >
-                <i className="material-symbols-outlined transition-all text-gray-500 dark:text-gray-400 ltr:mr-[7px] rtl:ml-[7px] !text-[22px] leading-none relative -top-px">
-                  shopping_cart
-                </i>
-                <span className="title leading-none">دیدگاه</span>
-              </Link>
-            </div>
+                    <li className="sidemenu-item mb-[4px] last:mb-0">
+                      <Link
+                        href="/admin/ecommerce/categories/"
+                        className={`sidemenu-link rounded-md flex items-center relative transition-all font-medium text-gray-500 dark:text-gray-400 py-[9px] ltr:pl-[38px] ltr:pr-[30px] rtl:pr-[38px] rtl:pl-[30px] hover:text-primary-500 hover:bg-primary-50 w-full text-left dark:hover:bg-[#15203c] ${
+                          pathname === "/admin/ecommerce/categories/"
+                            ? "active"
+                            : ""
+                        }`}
+                      >
+                        دسته بندی ها
+                      </Link>
+                    </li>
 
-            <div className="accordion-item rounded-md text-black dark:text-white mb-[5px] whitespace-nowrap">
-              <Link
-                href="/admin/ecommerce/refunds/"
-                className="flex items-center transition-all py-[9px] ltr:pl-[14px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] rounded-md font-medium w-full hover:bg-gray-50 text-left dark:hover:bg-[#15203c]"
-              >
-                <i className="material-symbols-outlined transition-all text-gray-500 dark:text-gray-400 ltr:mr-[7px] rtl:ml-[7px] !text-[22px] leading-none relative -top-px">
-                  shopping_cart
-                </i>
-                <span className="title leading-none">بازپرداخت </span>
-              </Link>
+                    <li className="sidemenu-item mb-[4px] last:mb-0">
+                      <Link
+                        href="/admin/ecommerce/reviews/"
+                        className={`sidemenu-link rounded-md flex items-center relative transition-all font-medium text-gray-500 dark:text-gray-400 py-[9px] ltr:pl-[38px] ltr:pr-[30px] rtl:pr-[38px] rtl:pl-[30px] hover:text-primary-500 hover:bg-primary-50 w-full text-left dark:hover:bg-[#15203c] ${
+                          pathname === "/admin/ecommerce/reviews/"
+                            ? "active"
+                            : ""
+                        }`}
+                      >
+                        دیدگاه
+                      </Link>
+                    </li>
+
+                    <li className="sidemenu-item mb-[4px] last:mb-0">
+                      <Link
+                        href="/admin/ecommerce/refunds/"
+                        className={`sidemenu-link rounded-md flex items-center relative transition-all font-medium text-gray-500 dark:text-gray-400 py-[9px] ltr:pl-[38px] ltr:pr-[30px] rtl:pr-[38px] rtl:pl-[30px] hover:text-primary-500 hover:bg-primary-50 w-full text-left dark:hover:bg-[#15203c] ${
+                          pathname === "/admin/ecommerce/refunds/"
+                            ? "active"
+                            : ""
+                        }`}
+                      >
+                        بازپرداخت
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
 
             <span className="block relative font-medium uppercase text-gray-400 mb-[8px] text-xs [&:not(:first-child)]:mt-[22px]">
-              کاربران
+              مدیرت کاربران
             </span>
 
             <div className="accordion-item rounded-md text-black dark:text-white mb-[5px] whitespace-nowrap">
@@ -237,16 +270,6 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
               >
                 <div className="pt-[4px]">
                   <ul className="sidebar-sub-menu">
-                    {/* <li className="sidemenu-item mb-[4px] last:mb-0">
-                      <Link
-                        href="/users/team-members/"
-                        className={`sidemenu-link rounded-md flex items-center relative transition-all font-medium text-gray-500 dark:text-gray-400 py-[9px] ltr:pl-[38px] ltr:pr-[30px] rtl:pr-[38px] rtl:pl-[30px] hover:text-primary-500 hover:bg-primary-50 w-full text-left dark:hover:bg-[#15203c] ${
-                          pathname === "/users/team-members/" ? "active" : ""
-                        }`}
-                      >
-                        Team Members
-                      </Link>
-                    </li> */}
 
                     <li className="sidemenu-item mb-[4px] last:mb-0">
                       <Link
@@ -261,6 +284,17 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
 
                     <li className="sidemenu-item mb-[4px] last:mb-0">
                       <Link
+                        href="/admin/apps/contacts/"
+                        className={`sidemenu-link rounded-md flex items-center relative transition-all font-medium text-gray-500 dark:text-gray-400 py-[9px] ltr:pl-[38px] ltr:pr-[30px] rtl:pr-[38px] rtl:pl-[30px] hover:text-primary-500 hover:bg-primary-50 w-full text-left dark:hover:bg-[#15203c] ${
+                          pathname === "/users/team-members/" ? "active" : ""
+                        }`}
+                      >
+                        خبرنامه
+                      </Link>
+                    </li>  
+                             
+                    {/* <li className="sidemenu-item mb-[4px] last:mb-0">
+                      <Link
                         href="/admin/users/add-user/"
                         className={`sidemenu-link rounded-md flex items-center relative transition-all font-medium text-gray-500 dark:text-gray-400 py-[9px] ltr:pl-[38px] ltr:pr-[30px] rtl:pr-[38px] rtl:pl-[30px] hover:text-primary-500 hover:bg-primary-50 w-full text-left dark:hover:bg-[#15203c] ${
                           pathname === "/users/add-user/" ? "active" : ""
@@ -268,7 +302,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
                       >
                         ساختن کاربر جدید
                       </Link>
-                    </li>
+                    </li> */}
                   </ul>
                 </div>
               </div>
@@ -277,7 +311,6 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
             <span className="block relative font-medium uppercase text-gray-400 mb-[8px] text-xs [&:not(:first-child)]:mt-[22px]">
               برنامه‌ها
             </span>
-
 
             {/* <div className="accordion-item rounded-md text-black dark:text-white mb-[5px] whitespace-nowrap">
               <Link
@@ -309,21 +342,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
 
             <div className="accordion-item rounded-md text-black dark:text-white mb-[5px] whitespace-nowrap">
               <Link
-                href="/apps/contacts/"
-                className={`accordion-button flex items-center transition-all py-[9px] ltr:pl-[14px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] rounded-md font-medium w-full relative hover:bg-gray-50 text-left dark:hover:bg-[#15203c] ${
-                  pathname === "/apps/contacts/" ? "active" : ""
-                }`}
-              >
-                <i className="material-symbols-outlined transition-all text-gray-500 dark:text-gray-400 ltr:mr-[7px] rtl:ml-[7px] !text-[22px] leading-none relative -top-px">
-                  contact_page
-                </i>
-                <span className="title leading-none">Contacts</span>
-              </Link>
-            </div>
-
-            {/* <div className="accordion-item rounded-md text-black dark:text-white mb-[5px] whitespace-nowrap">
-              <Link
-                href="/apps/chat/"
+                href="/admin/apps/chat/"
                 className={`accordion-button flex items-center transition-all py-[9px] ltr:pl-[14px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] rounded-md font-medium w-full relative hover:bg-gray-50 text-left dark:hover:bg-[#15203c] ${
                   pathname === "/apps/chat/" ? "active" : ""
                 }`}
@@ -331,11 +350,11 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
                 <i className="material-symbols-outlined transition-all text-gray-500 dark:text-gray-400 ltr:mr-[7px] rtl:ml-[7px] !text-[22px] leading-none relative -top-px">
                   chat
                 </i>
-                <span className="title leading-none">Chat</span>
+                <span className="title leading-none">پیام ها</span>
               </Link>
-            </div> */}
+            </div>
 
-            <div className="accordion-item rounded-md text-black dark:text-white mb-[5px] whitespace-nowrap">
+            {/* <div className="accordion-item rounded-md text-black dark:text-white mb-[5px] whitespace-nowrap">
               <button
                 className={`accordion-button toggle flex items-center transition-all py-[9px] ltr:pl-[14px] ltr:pr-[30px] rtl:pr-[14px] rtl:pl-[30px] rounded-md font-medium w-full relative hover:bg-gray-50 text-left dark:hover:bg-[#15203c] ${
                   openIndex === 2 ? "open" : ""
@@ -394,7 +413,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ toggleActive }) => {
                   </ul>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* <div className="accordion-item rounded-md text-black dark:text-white mb-[5px] whitespace-nowrap">
               <Link
