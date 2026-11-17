@@ -21,6 +21,7 @@ const LayoutProvider: React.FC<LayoutProviderProps> = ({ children }) => {
 
   const isAuthPage = [
     "/authentication/sign-in/",
+    "/admin/rms/mobilepos/",
     "/authentication/sign-up/",
     "/authentication/forgot-password/",
     "/authentication/reset-password/",
@@ -34,6 +35,7 @@ const LayoutProvider: React.FC<LayoutProviderProps> = ({ children }) => {
     "/front-pages/team/",
     "/front-pages/faq/",
     "/front-pages/contact/",
+    "/authentication/stafflogin/",
   ].includes(pathname);
 
   return (

@@ -1,10 +1,31 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import Image from "next/image";
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
+import dynamic from 'next/dynamic';
+import type { DropResult, DroppableProvided, DraggableProvided, DraggableStateSnapshot, DroppableStateSnapshot } from '@hello-pangea/dnd';
 
-// Define the data structure
+// ----------------------------------------------------
+// 💡 Dynamic Import (Required for D&D in Next.js/SSR)
+// ----------------------------------------------------
+const DragDropContext = dynamic(
+  () => import('@hello-pangea/dnd').then((mod) => mod.DragDropContext),
+  { ssr: false }
+);
+const Droppable = dynamic(
+  () => import('@hello-pangea/dnd').then((mod) => mod.Droppable),
+  { ssr: false }
+);
+const Draggable = dynamic(
+  () => import('@hello-pangea/dnd').then((mod) => mod.Draggable),
+  { ssr: false }
+);
+
+// ----------------------------------------------------
+// 💡 Types
+// ----------------------------------------------------
+
 interface Category {
   id: number;
   image: string;
@@ -12,544 +33,436 @@ interface Category {
   totalProducts: number;
   slug: string;
   description: string;
-  status: string;
+  status: "Active" | "Deactive";
+  parentId: number | null;
+  order: number;
+  children: Category[];
 }
 
+interface NewCategoryForm {
+  name: string;
+  slug: string;
+  description: string;
+  status: "Active" | "Deactive";
+  parentId: number | null;
+  imageFile: File | null;
+}
+
+interface ParentOption {
+  id: number | null;
+  name: string;
+  depth: number;
+}
+
+// ----------------------------------------------------
+// 💡 Helper Functions (Logic)
+// ----------------------------------------------------
+
+// تابع کمکی برای پیدا کردن لیست فرزندان یک والد در درخت
+const findList = (list: Category[], parentId: number | null): Category[] | null => {
+  if (parentId === null) return list;
+  for (const item of list) {
+    if (item.id === parentId) return item.children;
+    if (item.children && item.children.length > 0) {
+      const found = findList(item.children, parentId);
+      if (found) return found;
+    }
+  }
+  return null;
+};
+
+// تابع کمکی برای افزودن آیتم جدید به درخت
+const addToTree = (list: Category[], newItem: Category): Category[] => {
+    if (newItem.parentId === null) {
+        return [...list, newItem];
+    }
+    return list.map(item => {
+        if (item.id === newItem.parentId) {
+            return { ...item, children: [...item.children, newItem] };
+        }
+        if (item.children.length > 0) {
+            return { ...item, children: addToTree(item.children, newItem) };
+        }
+        return item;
+    });
+};
+
+// تابع کمکی برای حذف آیتم از درخت
+const recursiveDelete = (list: Category[], idToDelete: number): Category[] => {
+  return list
+    .filter(category => category.id !== idToDelete)
+    .map(category => ({
+      ...category,
+      children: recursiveDelete(category.children, idToDelete)
+    }));
+};
+
+// تابع کمکی برای جابجایی آیتم در درخت (Drag & Drop Logic)
+const moveItemInTree = (
+  list: Category[],
+  sourceParentId: number | null,
+  destinationParentId: number | null,
+  movedItemId: number,
+  destinationIndex: number
+): Category[] => {
+  const newList = JSON.parse(JSON.stringify(list)) as Category[];
+  
+  // 1. حذف از مبدا
+  const sourceList = findList(newList, sourceParentId);
+  if (!sourceList) return list;
+  const itemIndexInSource = sourceList.findIndex(item => item.id === movedItemId);
+  if (itemIndexInSource === -1) return list;
+  const [movedItem] = sourceList.splice(itemIndexInSource, 1);
+  
+  // 2. افزودن به مقصد
+  const destinationList = findList(newList, destinationParentId);
+  if (!destinationList) return list;
+  movedItem.parentId = destinationParentId;
+  destinationList.splice(destinationIndex, 0, movedItem);
+  
+  // 3. مرتب سازی مجدد (اختیاری اما توصیه شده)
+  destinationList.forEach((item, index) => { item.order = index; });
+  
+  return newList;
+};
+
+// تابع کمکی برای مسطح کردن لیست جهت استفاده در دراپ‌داون والد
+const flattenCategories = (categories: Category[], depth: number = 0, list: ParentOption[] = []): ParentOption[] => {
+  for (const category of categories) {
+    list.push({ id: category.id, name: `${'— '.repeat(depth)}${category.name}`, depth: depth });
+    if (category.children && category.children.length > 0) {
+      flattenCategories(category.children, depth + 1, list);
+    }
+  }
+  return list;
+};
+
+// ----------------------------------------------------
+// 💡 Components (CategoryItem & CategoryList)
+// ----------------------------------------------------
+
+interface CategoryListBaseProps {
+  categories: Category[];
+  parentId: number | null;
+  onDragEnd: (result: DropResult) => Promise<void>;
+  onDelete: (id: number) => void;
+  level?: number; 
+}
+
+interface CategoryItemProps extends Omit<CategoryListBaseProps, 'categories' | 'parentId'> {
+  category: Category;
+  index: number;
+  CategoryListComponent: React.FC<CategoryListBaseProps>;
+}
+
+const CategoryItem: React.FC<CategoryItemProps> = React.memo(({ category, index, onDragEnd, onDelete, CategoryListComponent, level = 0 }) => {
+  return (
+    <Draggable draggableId={String(category.id)} index={index}>
+      {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
+        <div
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          style={{ 
+            ...provided.draggableProps.style,
+            // تنظیمات درگ
+            opacity: snapshot.isDragging ? 0.9 : 1,
+            zIndex: snapshot.isDragging ? 9999 : 'auto',
+          }}
+          className={`
+            mb-2 rounded-md transition-all duration-200 relative
+            ${snapshot.isDragging ? 'shadow-2xl scale-[1.01] ring-2 ring-primary-500 bg-white dark:bg-[#0c1427]' : ''}
+          `}
+        >
+          {/* محتوای هدر آیتم (همیشه نمایش داده می‌شود) */}
+          <div className="flex items-center bg-white dark:bg-[#0c1427] p-[10px] md:p-[12px] border border-gray-100 dark:border-[#172036] rounded-md hover:border-gray-300 dark:hover:border-gray-600 transition-colors z-10 relative">
+            
+            <div 
+              {...provided.dragHandleProps} 
+              className="cursor-grab active:cursor-grabbing text-gray-400 hover:text-primary-500 p-2 rounded hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+              title="برای جابجایی بکشید"
+            >
+              <i className="material-symbols-outlined !text-[22px]">drag_indicator</i>
+            </div>
+            
+            <div className="mx-3 relative w-[32px] h-[32px]">
+               <Image alt={category.name} src={category.image} className="rounded-full object-cover" fill sizes="32px" />
+            </div>
+
+            <div className="flex-grow flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
+              <span className="font-bold text-sm text-gray-800 dark:text-gray-100">{category.name}</span>
+              <span className="text-gray-400 text-xs font-mono bg-gray-50 dark:bg-gray-800 px-1.5 py-0.5 rounded">/{category.slug}</span>
+            </div>
+
+            <div className="flex items-center gap-2">
+               <span className={`text-[10px] px-2 py-0.5 rounded-full border ${category.status === 'Active' ? 'border-green-200 text-green-600 bg-green-50' : 'border-red-200 text-red-600 bg-red-50'}`}>
+                 {category.status === 'Active' ? 'فعال' : 'غیرفعال'}
+               </span>
+              <button onClick={() => onDelete(category.id)} className="text-gray-400 hover:text-red-500 p-1 transition-colors"><i className="material-symbols-outlined !text-[18px]">delete</i></button>
+            </div>
+          </div>
+
+          {/* فرزندان (مخفی شدن در حالت درگ برای جلوگیری از پرش) */}
+          {!snapshot.isDragging && (
+             <div className="ltr:pl-4 rtl:pr-4 pt-2">
+               {/* ایجاد خط راهنمای بصری و فاصله از کناره */}
+               <div className="ltr:pl-4 rtl:pr-4 border-l-2 rtl:border-l-0 rtl:border-r-2 border-dashed border-gray-200 dark:border-gray-700">
+                 <CategoryListComponent 
+                   categories={category.children} 
+                   parentId={category.id} 
+                   onDragEnd={onDragEnd} 
+                   onDelete={onDelete} 
+                   level={level + 1}
+                 />
+               </div>
+             </div>
+          )}
+        </div>
+      )}
+    </Draggable>
+  );
+});
+CategoryItem.displayName = 'CategoryItem';
+
+const CategoryList: React.FC<CategoryListBaseProps> = React.memo(({ categories, parentId, onDragEnd, onDelete, level = 0 }) => {
+  const droppableId = `list-${parentId === null ? 'root' : parentId}`; 
+
+  return (
+    <Droppable droppableId={droppableId} type="CATEGORY">
+      {(provided: DroppableProvided, snapshot: DroppableStateSnapshot) => (
+        <div
+          ref={provided.innerRef}
+          {...provided.droppableProps}
+          className={`
+            transition-all duration-200 rounded-md pb-4 
+            ${snapshot.isDraggingOver ? 'bg-primary-50/50 dark:bg-primary-900/10 ring-1 ring-dashed ring-primary-300 min-h-[60px]' : 'min-h-[10px]'}
+          `}
+        >
+          {categories.map((category, index) => (
+            <CategoryItem 
+              key={category.id} 
+              category={category} 
+              index={index} 
+              onDragEnd={onDragEnd} 
+              onDelete={onDelete} 
+              CategoryListComponent={CategoryList} 
+              level={level}
+            />
+          ))}
+          {provided.placeholder}
+          
+          {categories.length === 0 && snapshot.isDraggingOver && (
+             <div className="h-[30px] border border-dashed border-primary-300 rounded flex items-center justify-center text-[10px] text-primary-400">
+                اینجا رها کنید
+             </div>
+          )}
+        </div>
+      )}
+    </Droppable>
+  );
+});
+CategoryList.displayName = 'CategoryList';
+
+// ----------------------------------------------------
+// 💡 Mock Data
+// ----------------------------------------------------
 const categoriesData: Category[] = [
-  {
-    id: 1,
-    image: "/images/products/product1.jpg",
-    name: "Watch",
-    totalProducts: 54,
-    slug: "watch",
-    description: "What is lorem ipsum?",
-    status: "Active",
-  },
-  {
-    id: 2,
-    image: "/images/products/product2.jpg",
-    name: "Headphone",
-    totalProducts: 13,
-    slug: "headphone",
-    description: "Why do we use it?",
-    status: "Active",
-  },
-  {
-    id: 3,
-    image: "/images/products/product3.jpg",
-    name: "Mobile",
-    totalProducts: 42,
-    slug: "mobile",
-    description: "Where does it come from?",
-    status: "Deactive",
-  },
-  {
-    id: 4,
-    image: "/images/products/product1.jpg",
-    name: "Laptop",
-    totalProducts: 34,
-    slug: "laptop",
-    description: "Lorem ipsum dolor sit amet.",
-    status: "Active",
-  },
-  {
-    id: 5,
-    image: "/images/products/product2.jpg",
-    name: "Camera",
-    totalProducts: 19,
-    slug: "camera",
-    description: "Lorem ipsum dolor sit amet.",
-    status: "Deactive",
-  },
-  {
-    id: 6,
-    image: "/images/products/product3.jpg",
-    name: "Tablet",
-    totalProducts: 45,
-    slug: "tablet",
-    description: "Lorem ipsum dolor sit amet.",
-    status: "Active",
-  },
+  { id: 10, image: "/images/products/product1.jpg", name: "الکترونیک", totalProducts: 54, slug: "electronic", description: "توضیحات", status: "Active", parentId: null, order: 0, children: [
+    { id: 11, image: "/images/products/product2.jpg", name: "موبایل", totalProducts: 13, slug: "mobile", description: "توضیحات", status: "Active", parentId: 10, order: 0, children: [
+      { id: 13, image: "/images/products/product3.jpg", name: "سامسونگ", totalProducts: 42, slug: "samsung", description: "توضیحات", status: "Active", parentId: 11, order: 0, children: [] }
+    ]},
+    { id: 12, image: "/images/products/product4.jpg", name: "لپ‌تاپ", totalProducts: 34, slug: "laptop", description: "توضیحات", status: "Deactive", parentId: 10, order: 1, children: [] },
+  ]},
+  { id: 20, image: "/images/products/product5.jpg", name: "پوشاک", totalProducts: 19, slug: "apparel", description: "توضیحات", status: "Active", parentId: null, order: 1, children: [
+    { id: 21, image: "/images/products/product6.jpg", name: "زنانه", totalProducts: 45, slug: "womens", description: "توضیحات", status: "Active", parentId: 20, order: 0, children: [] },
+  ]},
 ];
 
-const ITEMS_PER_PAGE = 5;
+// ----------------------------------------------------
+// 💡 Main Component: CategoriesTable
+// ----------------------------------------------------
 
 const CategoriesTable: React.FC = () => {
-  // Modal
   const [open, setOpen] = useState(false);
-
-  // Table
+  const [jsonModalOpen, setJsonModalOpen] = useState(false);
+  const [jsonOutput, setJsonOutput] = useState(''); 
   const [categories, setCategories] = useState<Category[]>(categoriesData);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [searchQuery, setSearchQuery] = useState(""); // State for search query
-  const [selectedCategories, setSelectedCategories] = useState<number[]>([]); // Store selected category IDs
-
-  // Filter categories based on search query
-  const filteredCategories = categories.filter((category) => {
-    return (
-      category.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      category.slug.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      category.description.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+  const [searchQuery, setSearchQuery] = useState(""); 
+  
+  const [newCategory, setNewCategory] = useState<NewCategoryForm>({
+      name: "", slug: "", description: "", status: "Active", parentId: null, imageFile: null,
   });
 
-  // Calculate the indices of the categories to show based on the current page
-  const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
-  const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
-  const currentCategories = filteredCategories.slice(
-    indexOfFirstItem,
-    indexOfLastItem
-  );
+  // --- Handlers ---
 
-  // Calculate the total number of pages
-  const totalPages = Math.ceil(filteredCategories.length / ITEMS_PER_PAGE);
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+      const { name, value } = e.target;
+      let updatedValue: string | number | null = value;
+      if (name === "parentId") updatedValue = value === "null" ? null : parseInt(value);
+      if (name === 'name') {
+          setNewCategory(prev => ({ ...prev, name: value, slug: value.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') }));
+      } else {
+          setNewCategory(prev => ({ ...prev, [name]: updatedValue }));
+      }
+  }, []);
 
-  const handlePageChange = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
+  const handleFileChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+      if (event.target.files && event.target.files.length > 0) {
+          setNewCategory(prev => ({ ...prev, imageFile: event.target.files![0] }));
+      } else {
+          setNewCategory(prev => ({ ...prev, imageFile: null }));
+      }
+  }, []);
+
+  // هندلر ثبت دسته جدید (فقط به استیت اضافه می‌کند)
+  const handleAddCategorySubmit = async (e: React.FormEvent) => {
+      e.preventDefault();
+      if (!newCategory.name) return;
+
+      const newItem: Category = {
+          id: Date.now(),
+          name: newCategory.name,
+          slug: newCategory.slug,
+          description: newCategory.description,
+          status: newCategory.status,
+          parentId: newCategory.parentId,
+          order: 99,
+          image: newCategory.imageFile ? URL.createObjectURL(newCategory.imageFile) : "/images/products/product1.jpg",
+          totalProducts: 0,
+          children: []
+      };
+
+      setCategories(prev => addToTree(prev, newItem));
+      setOpen(false);
+      setNewCategory({ name: "", slug: "", description: "", status: "Active", parentId: null, imageFile: null });
   };
 
-  const handleNextPage = () => {
-    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  // هندلر ثبت نهایی تغییرات ساختار (نمایش JSON)
+  const handleSaveStructureChanges = () => {
+    const jsonString = JSON.stringify(categories, ['id', 'name', 'slug', 'parentId', 'order', 'children'], 2);
+    setJsonOutput(jsonString);
+    setJsonModalOpen(true);
   };
 
-  const handlePrevPage = () => {
-    if (currentPage > 1) setCurrentPage(currentPage - 1);
-  };
+  const handleDelete = useCallback((id: number) => {
+    if (!window.confirm("آیا مطمئن هستید؟ این عمل غیرقابل بازگشت است.")) return;
+    setCategories(prev => recursiveDelete(prev, id));
+  }, []);
 
-  // Handle individual category checkbox toggle
-  const handleCheckboxChange = (id: number) => {
-    setSelectedCategories((prevSelected) =>
-      prevSelected.includes(id)
-        ? prevSelected.filter((categoryId) => categoryId !== id)
-        : [...prevSelected, id]
-    );
-  };
+  const onDragEnd = useCallback(async (result: DropResult) => {
+    const { source, destination, draggableId } = result;
+    if (!destination || (source.droppableId === destination.droppableId && source.index === destination.index)) return;
+    
+    const movedItemId = parseInt(draggableId);
+    const extractParentId = (did: string) => (did.replace('list-', '') === 'root' ? null : parseInt(did.replace('list-', '')));
 
-  // Handle "select all" checkbox toggle
-  const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.checked) {
-      setSelectedCategories(currentCategories.map((category) => category.id));
-    } else {
-      setSelectedCategories([]);
-    }
-  };
+    const sourceParentId = extractParentId(source.droppableId);
+    const destinationParentId = extractParentId(destination.droppableId);
+    
+    if (sourceParentId === movedItemId || destinationParentId === movedItemId) return;
 
-  // Function to delete a category
-  const handleDelete = (id: number) => {
-    setCategories((prevCategories) =>
-      prevCategories.filter((category) => category.id !== id)
-    );
-  };
-
-  // upload image
-  const [selectedImages, setSelectedImages] = useState<File[]>([]);
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      const filesArray = Array.from(event.target.files);
-      setSelectedImages((prevImages) => [...prevImages, ...filesArray]);
-    }
-  };
-
-  const handleRemoveImage = (index: number) => {
-    setSelectedImages((prevImages) => prevImages.filter((_, i) => i !== index));
-  };
+    const newCategories = moveItemInTree(categories, sourceParentId, destinationParentId, movedItemId, destination.index);
+    setCategories(newCategories); 
+  }, [categories]);
 
   return (
     <>
       <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
-        <div className="trezo-card-header mb-[20px] md:mb-[25px] sm:flex items-center justify-between">
+        
+        {/* Header */}
+        <div className="trezo-card-header mb-[20px] md:mb-[25px] flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="trezo-card-title">
-            <form className="relative sm:w-[265px]">
-              <label className="leading-none absolute ltr:left-[13px] rtl:right-[13px] text-black dark:text-white mt-px top-1/2 -translate-y-1/2">
-                <i className="material-symbols-outlined !text-[20px]">search</i>
-              </label>
-              <input
-                type="text"
-                placeholder="Search category here..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-gray-50 border border-gray-50 h-[36px] text-xs rounded-md w-full block text-black pt-[11px] pb-[12px] ltr:pl-[38px] rtl:pr-[38px] ltr:pr-[13px] ltr:md:pr-[16px] rtl:pl-[13px] rtl:md:pl-[16px] placeholder:text-gray-500 outline-0 dark:bg-[#15203c] dark:text-white dark:border-[#15203c] dark:placeholder:text-gray-400"
-              />
-            </form>
+            <h5 className="mb-0 text-lg font-bold">مدیریت دسته‌بندی‌ها</h5>
           </div>
-
-          <div className="trezo-card-subtitle mt-[15px] sm:mt-0">
-            <button
-              type="button"
-              className="inline-block transition-all rounded-md font-medium px-[13px] py-[6px] text-primary-500 border border-primary-500 hover:bg-primary-500 hover:text-white"
-              onClick={() => setOpen(true)}
-            >
-              <span className="inline-block relative ltr:pl-[22px] rtl:pr-[22px]">
-                <i className="material-symbols-outlined !text-[22px] absolute ltr:-left-[4px] rtl:-right-[4px] top-1/2 -translate-y-1/2">
-                  add
-                </i>
-                Add New Category
-              </span>
+          <div className="flex flex-wrap items-center gap-3">
+             <input type="text" placeholder="جستجو..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="bg-gray-50 border border-gray-100 h-[36px] text-xs rounded-md w-[200px] px-3 outline-0 dark:bg-[#15203c] dark:text-white dark:border-[#15203c]" />
+            <button type="button" className="inline-flex items-center gap-2 transition-all rounded-md font-medium px-[13px] py-[6px] text-primary-500 border border-primary-500 hover:bg-primary-500 hover:text-white text-sm" onClick={() => setOpen(true)}>
+              <i className="material-symbols-outlined !text-[18px]">add</i> افزودن دسته
+            </button>
+            <button type="button" className="inline-flex items-center gap-2 transition-all rounded-md font-medium px-[13px] py-[6px] text-white bg-green-600 border border-green-600 hover:bg-green-700 text-sm shadow-sm" onClick={handleSaveStructureChanges}>
+              <i className="material-symbols-outlined !text-[18px]">save</i> ثبت تغییرات ساختار
             </button>
           </div>
         </div>
 
         <div className="trezo-card-content">
-          <div className="table-responsive overflow-x-auto">
-            <table className="w-full">
-              <thead className="text-black dark:text-white">
-                <tr>
-                  <th className="ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap ltr:first:rounded-tl-md ltr:last:rounded-tr-md rtl:first:rounded-tr-md rtl:last:rounded-tl-md">
-                    <div className="form-check relative top-[2px]">
-                      <input
-                        type="checkbox"
-                        className="cursor-pointer"
-                        onChange={handleSelectAll}
-                        checked={
-                          selectedCategories.length === currentCategories.length
-                        }
-                      />
-                    </div>
-                  </th>
-                  <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap ltr:first:rounded-tl-md ltr:last:rounded-tr-md rtl:first:rounded-tr-md rtl:last:rounded-tl-md">
-                    Image
-                  </th>
-                  <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap ltr:first:rounded-tl-md ltr:last:rounded-tr-md rtl:first:rounded-tr-md rtl:last:rounded-tl-md">
-                    Name
-                  </th>
-                  <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap ltr:first:rounded-tl-md ltr:last:rounded-tr-md rtl:first:rounded-tr-md rtl:last:rounded-tl-md">
-                    Total Products
-                  </th>
-                  <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap ltr:first:rounded-tl-md ltr:last:rounded-tr-md rtl:first:rounded-tr-md rtl:last:rounded-tl-md">
-                    Slug
-                  </th>
-                  <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap ltr:first:rounded-tl-md ltr:last:rounded-tr-md rtl:first:rounded-tr-md rtl:last:rounded-tl-md">
-                    Description
-                  </th>
-                  <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap ltr:first:rounded-tl-md ltr:last:rounded-tr-md rtl:first:rounded-tr-md rtl:last:rounded-tl-md">
-                    Status
-                  </th>
-                  <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] bg-gray-50 dark:bg-[#15203c] whitespace-nowrap ltr:first:rounded-tl-md ltr:last:rounded-tr-md rtl:first:rounded-tr-md rtl:last:rounded-tl-md">
-                    Action
-                  </th>
-                </tr>
-              </thead>
-
-              <tbody className="text-black dark:text-white">
-                {currentCategories.map((category) => (
-                  <tr key={category.id}>
-                    <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
-                      <div className="form-check relative top-[2px]">
-                        <input
-                          type="checkbox"
-                          className="cursor-pointer"
-                          checked={selectedCategories.includes(category.id)}
-                          onChange={() => handleCheckboxChange(category.id)}
-                        />
-                      </div>
-                    </td>
-
-                    <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
-                      <Image
-                        alt="product-image"
-                        src={category.image}
-                        className="rounded-full"
-                        width={50}
-                        height={50}
-                      />
-                    </td>
-
-                    <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
-                      {category.name}
-                    </td>
-
-                    <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
-                      <span className="text-gray-500 dark:text-gray-400">
-                        {category.totalProducts}
-                      </span>
-                    </td>
-
-                    <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
-                      <span className="text-gray-500 dark:text-gray-400">
-                        {category.slug}
-                      </span>
-                    </td>
-
-                    <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
-                      <span className="text-gray-500 dark:text-gray-400">
-                        {category.description}
-                      </span>
-                    </td>
-
-                    <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
-                      <span
-                        className={`px-[8px] py-[3px] inline-block ${
-                          category.status === "Active"
-                            ? "bg-primary-50 dark:bg-[#15203c] text-primary-500"
-                            : "bg-danger-50 dark:bg-[#15203c] text-danger-500"
-                        } rounded-sm font-medium text-xs`}
-                      >
-                        {category.status}
-                      </span>
-                    </td>
-
-                    <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[15px] border-b border-gray-100 dark:border-[#172036] ltr:first:border-l ltr:last:border-r rtl:first:border-r rtl:last:border-l">
-                      <div className="flex items-center gap-[9px]">
-                        <div className="relative group">
-                          <button
-                            type="button"
-                            className="text-primary-500 leading-none"
-                          >
-                            <i className="material-symbols-outlined !text-md">
-                              visibility
-                            </i>
-                          </button>
-
-                          {/* Tooltip */}
-                          <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                            View
-                            {/* Arrow */}
-                            <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-white dark:border-[#172036] border-t-gray-800 dark:border-t-gray-800"></div>
-                          </div>
-                        </div>
-
-                        <div className="relative group">
-                          <button
-                            type="button"
-                            className="text-gray-500 leading-none"
-                          >
-                            <i className="material-symbols-outlined !text-md">
-                              edit
-                            </i>
-                          </button>
-
-                          {/* Tooltip */}
-                          <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                            Edit
-                            {/* Arrow */}
-                            <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-white dark:border-[#172036] border-t-gray-800 dark:border-t-gray-800"></div>
-                          </div>
-                        </div>
-
-                        <div className="relative group">
-                          <button
-                            type="button"
-                            className="text-danger-500 leading-none"
-                            onClick={() => handleDelete(category.id)}
-                          >
-                            <i className="material-symbols-outlined !text-md">
-                              delete
-                            </i>
-                          </button>
-
-                          {/* Tooltip */}
-                          <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                            Delete
-                            {/* Arrow */}
-                            <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-white dark:border-[#172036] border-t-gray-800 dark:border-t-gray-800"></div>
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="flex items-center text-gray-400 font-medium text-xs px-[10px] pb-2 border-b border-gray-100 dark:border-[#172036] mb-4">
+             <span className="ml-2 material-symbols-outlined !text-[16px]">info</span>
+             برای جابجایی دسته‌ها، آیکون <i className="material-symbols-outlined !text-[16px] px-1">drag_indicator</i> را بگیرید و بکشید.
           </div>
 
-          <div className="px-[20px] py-[12px] md:py-[14px] rounded-b-md border-l border-r border-b border-gray-100 dark:border-[#172036] sm:flex sm:items-center justify-between">
-            <p className="!mb-0 !text-sm">
-              {" "}
-              Showing {(currentPage - 1) * ITEMS_PER_PAGE + 1}-
-              {Math.min(currentPage * ITEMS_PER_PAGE, categories.length)} of{" "}
-              {categories.length} results
-            </p>
-
-            <ol className="mt-[10px] sm:mt-0">
-              <li className="inline-block mx-[2px] ltr:first:ml-0 ltr:last:mr-0 rtl:first:mr-0 rtl:last:ml-0">
-                <button
-                  onClick={handlePrevPage}
-                  className="w-[31px] h-[31px] block leading-[29px] relative text-center rounded-md border border-gray-100 dark:border-[#172036] transition-all hover:bg-primary-500 hover:text-white hover:border-primary-500"
-                >
-                  <span className="opacity-0">0</span>
-                  <i className="material-symbols-outlined left-0 right-0 absolute top-1/2 -translate-y-1/2">
-                    chevron_left
-                  </i>
-                </button>
-              </li>
-
-              {[...Array(totalPages)].map((_, index) => (
-                <li
-                  key={index}
-                  className="inline-block mx-[2px] ltr:first:ml-0 ltr:last:mr-0 rtl:first:mr-0 rtl:last:ml-0"
-                >
-                  <button
-                    onClick={() => handlePageChange(index + 1)}
-                    className={`w-[31px] h-[31px] block leading-[29px] relative text-center rounded-md border ${
-                      currentPage === index + 1
-                        ? "bg-primary-500 text-white"
-                        : "border-gray-100 dark:border-[#172036] transition-all hover:bg-primary-500 hover:text-white hover:border-primary-500"
-                    }`}
-                  >
-                    {index + 1}
-                  </button>
-                </li>
-              ))}
-
-              <li className="inline-block mx-[2px] ltr:first:ml-0 ltr:last:mr-0 rtl:first:mr-0 rtl:last:ml-0">
-                <button
-                  onClick={handleNextPage}
-                  className="w-[31px] h-[31px] block leading-[29px] relative text-center rounded-md border border-gray-100 dark:border-[#172036] transition-all hover:bg-primary-500 hover:text-white hover:border-primary-500"
-                >
-                  <span className="opacity-0">0</span>
-                  <i className="material-symbols-outlined left-0 right-0 absolute top-1/2 -translate-y-1/2">
-                    chevron_right
-                  </i>
-                </button>
-              </li>
-            </ol>
+          <div className="trezo-category-tree min-h-[200px]">
+            <DragDropContext onDragEnd={onDragEnd}>
+              <CategoryList categories={categories} parentId={null} onDragEnd={onDragEnd} onDelete={handleDelete} />
+            </DragDropContext>
           </div>
         </div>
       </div>
 
-      {/* Modal */}
-      <Dialog open={open} onClose={setOpen} className="relative z-10">
-        <DialogBackdrop
-          transition
-          className="fixed inset-0 bg-gray-500/75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
-        />
-
+      {/* مودال افزودن دسته */}
+      <Dialog open={open} onClose={setOpen} className="relative z-50">
+        <DialogBackdrop transition className="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity duration-300 ease-out data-[closed]:opacity-0" />
         <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-          <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-            <DialogPanel
-              transition
-              className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 sm:w-full sm:max-w-[550px] data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95"
-            >
-              <div className="trezo-card w-full bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md">
-                <div className="trezo-card-header bg-gray-50 dark:bg-[#15203c] mb-[20px] md:mb-[25px] flex items-center justify-between -mx-[20px] md:-mx-[25px] -mt-[20px] md:-mt-[25px] p-[20px] md:p-[25px] rounded-t-md">
-                  <div className="trezo-card-title">
-                    <h5 className="!mb-0">Add New Category</h5>
-                  </div>
-
-                  <div className="trezo-card-subtitle">
-                    <button
-                      type="button"
-                      className="text-[23px] transition-all leading-none text-black dark:text-white hover:text-primary-500"
-                      onClick={() => setOpen(false)}
-                    >
-                      <i className="ri-close-fill"></i>
-                    </button>
-                  </div>
-                </div>
-
-                <div className="trezo-card-content">
-                  <form>
-                    <div className="sm:grid sm:grid-cols-2 sm:gap-[25px]">
-                      <div className="mb-[20px] sm:mb-0">
-                        <label className="mb-[10px] text-black dark:text-white font-medium block">
-                          Name
-                        </label>
-                        <input
-                          type="text"
-                          className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
-                          placeholder="E.g. Watch"
-                        />
+          <div className="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+            <DialogPanel transition className="relative transform overflow-hidden rounded-lg bg-white dark:bg-[#0c1427] text-right shadow-xl transition-all duration-300 sm:w-full sm:max-w-[600px]">
+              <div className="p-6 border-b border-gray-100 dark:border-[#172036] flex justify-between items-center">
+                 <h3 className="text-lg font-bold text-gray-900 dark:text-white">افزودن دسته‌بندی جدید</h3>
+                 <button onClick={() => setOpen(false)} className="text-gray-400 hover:text-gray-600"><i className="material-symbols-outlined">close</i></button>
+              </div>
+              <div className="p-6">
+                 <form onSubmit={handleAddCategorySubmit}>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                      <div>
+                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">نام دسته</label>
+                        <input type="text" name="name" value={newCategory.name} onChange={handleChange} required className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-[#15203c] dark:border-gray-600 dark:text-white" />
                       </div>
-
-                      <div className="mb-[20px] sm:mb-0">
-                        <label className="mb-[10px] text-black dark:text-white font-medium block">
-                          Status
-                        </label>
-                        <select className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] px-[14px] block w-full outline-0 cursor-pointer transition-all focus:border-primary-500">
-                          <option value={0}>Select</option>
-                          <option value={1}>Active</option>
-                          <option value={2}>Deactive</option>
+                       <div>
+                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">وضعیت</label>
+                        <select name="status" value={newCategory.status} onChange={handleChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-[#15203c] dark:border-gray-600 dark:text-white">
+                          <option value="Active">فعال</option>
+                          <option value="Deactive">غیرفعال</option>
                         </select>
                       </div>
-
-                      <div className="sm:col-span-2 mb-[20px] sm:mb-0">
-                        <label className="mb-[10px] text-black dark:text-white font-medium block">
-                          Description
-                        </label>
-                        <textarea
-                          className="h-[140px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] p-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
-                          placeholder="E.g. It makes me feel..."
-                        ></textarea>
+                      <div className="sm:col-span-2">
+                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">دسته‌بندی والد</label>
+                        <select name="parentId" value={newCategory.parentId === null ? "null" : newCategory.parentId} onChange={handleChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-[#15203c] dark:border-gray-600 dark:text-white">
+                          <option value="null">--- دسته اصلی (بدون والد) ---</option>
+                          {flattenCategories(categories).map(option => (
+                            <option key={option.id} value={option.id as number}>{option.name}</option>
+                          ))}
+                        </select>
                       </div>
-
-                      <div className="sm:col-span-2 mb-[20px] sm:mb-0">
-                        <label className="mb-[10px] text-black dark:text-white font-medium block">
-                          Image
-                        </label>
-                        <div id="fileUploader">
-                          <div className="relative flex items-center justify-center overflow-hidden rounded-md py-[48px] px-[20px] border border-gray-200 dark:border-[#172036]">
-                            <div className="flex items-center justify-center">
-                              <div className="w-[35px] h-[35px] border border-gray-100 dark:border-[#15203c] flex items-center justify-center rounded-md text-primary-500 text-lg ltr:mr-[12px] rtl:ml-[12px]">
-                                <i className="ri-upload-2-line"></i>
-                              </div>
-                              <p className="leading-[1.5]">
-                                <strong className="text-black dark:text-white">
-                                  Click to upload
-                                </strong>
-                                <br /> you file here
-                              </p>
-                            </div>
-                            <input
-                              type="file"
-                              id="fileInput"
-                              accept="image/*"
-                              onChange={handleFileChange}
-                              className="absolute top-0 left-0 right-0 bottom-0 rounded-md z-[1] opacity-0 cursor-pointer"
-                            />
-                          </div>
-
-                          {/* Image Previews */}
-                          <div className="mt-[10px] flex flex-wrap gap-2">
-                            {selectedImages.map((image, index) => (
-                              <div
-                                key={index}
-                                className="relative w-[80px] h-[80px]"
-                              >
-                                <Image
-                                  src={URL.createObjectURL(image)}
-                                  alt="product-preview"
-                                  width={80}
-                                  height={80}
-                                  className="rounded-md"
-                                />
-                                <button
-                                  type="button"
-                                  className="absolute top-[-5px] right-[-5px] bg-orange-500 text-white w-[20px] h-[20px] flex items-center justify-center rounded-full text-xs rtl:right-auto rtl:left-[-5px]"
-                                  onClick={() => handleRemoveImage(index)}
-                                >
-                                  ✕
-                                </button>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
+                      <div className="sm:col-span-2 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-4 text-center">
+                         <div className="relative">
+                             <i className="material-symbols-outlined text-4xl text-gray-400 mb-2">cloud_upload</i>
+                             <input type="file" className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" onChange={handleFileChange} accept="image/*" />
+                             {newCategory.imageFile && <p className="text-sm text-green-500 mt-2">{newCategory.imageFile.name}</p>}
+                           </div>
                       </div>
                     </div>
-
-                    <div className="mt-[20px] md:mt-[25px] ltr:text-right rtl:text-left">
-                      <button
-                        type="button"
-                        className="rounded-md inline-block transition-all font-medium ltr:mr-[15px] rtl:ml-[15px] px-[26.5px] py-[12px] bg-danger-500 text-white hover:bg-danger-400"
-                        onClick={() => setOpen(false)}
-                      >
-                        Cancel
-                      </button>
-
-                      <button
-                        type="button"
-                        className="inline-block bg-primary-500 text-white py-[12px] px-[26.5px] transition-all rounded-md hover:bg-primary-400"
-                      >
-                        <span className="inline-block relative ltr:pl-[25px] rtl:pr-[25px]">
-                          <i className="material-symbols-outlined !text-[20px] absolute ltr:left-0 rtl:right-0 top-1/2 -translate-y-1/2">
-                            add
-                          </i>
-                          Create
-                        </span>
-                      </button>
+                    <div className="mt-6 flex justify-end gap-3">
+                      <button type="button" onClick={() => setOpen(false)} className="px-5 py-2.5 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600">لغو</button>
+                      <button type="submit" className="text-white bg-primary-600 hover:bg-primary-700 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600">افزودن</button>
                     </div>
-                  </form>
-                </div>
+                 </form>
+              </div>
+            </DialogPanel>
+          </div>
+        </div>
+      </Dialog>
+
+      {/* مودال JSON */}
+      <Dialog open={jsonModalOpen} onClose={setJsonModalOpen} className="relative z-50">
+        <DialogBackdrop transition className="fixed inset-0 bg-gray-900/70 backdrop-blur-sm transition-opacity duration-300 ease-out data-[closed]:opacity-0" />
+        <div className="fixed inset-0 z-50 w-screen overflow-y-auto">
+          <div className="flex min-h-full items-center justify-center p-4">
+            <DialogPanel transition className="relative transform overflow-hidden rounded-xl bg-gray-900 text-white shadow-2xl transition-all duration-300 sm:w-full sm:max-w-2xl">
+              <div className="flex items-center justify-between p-4 border-b border-gray-700">
+                <h3 className="text-lg font-mono font-bold text-green-400">ساختار نهایی (JSON)</h3>
+                <button onClick={() => setJsonModalOpen(false)} className="text-gray-400 hover:text-white"><span className="material-symbols-outlined">close</span></button>
+              </div>
+              <div className="p-0 relative group">
+                <button onClick={() => { navigator.clipboard.writeText(jsonOutput); alert('کپی شد!'); }} className="absolute top-4 right-4 bg-gray-700 hover:bg-gray-600 text-xs px-3 py-1 rounded border border-gray-600 transition-opacity opacity-0 group-hover:opacity-100">کپی JSON</button>
+                <pre className="p-6 overflow-auto max-h-[60vh] text-sm font-mono text-gray-300 bg-[#0d1117]" dir="ltr">{jsonOutput}</pre>
               </div>
             </DialogPanel>
           </div>

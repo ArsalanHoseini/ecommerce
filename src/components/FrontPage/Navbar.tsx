@@ -108,7 +108,7 @@ const Navbar: React.FC = () => {
     // دکمه ورود
     return (
       <Link
-        href="/authentication/enter-phone"
+        href="/authentication/stafflogin"
         className="inline-block lg:text-[15px] xl:text-[16px] py-[11px] px-[17px] bg-purple-600 text-white rounded-md transition-all font-medium border border-purple-600 hover:bg-purple-500 hover:border-purple-500"
       >
         <span className="inline-block relative ltr:pl-[25px] rtl:pr-[25px] ltr:md:pl-[29px] rtl:md:pr-[29px]">

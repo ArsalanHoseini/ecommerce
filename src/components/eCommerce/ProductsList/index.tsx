@@ -8,7 +8,7 @@ interface Product {
   id: string;
   name: string;
   date: string;
-  lastUpdated: string; // 💡 فیلد جدید: آخرین بروزرسانی
+  lastUpdated: string;
   category: string;
   viewLink: string;
   image: string;
@@ -19,7 +19,7 @@ interface Product {
   rating: number;
   reviews: number;
   status: "منتشر شده" | "پیش‌نویس";
-  creator: string; // 💡 فیلد جدید: سازنده محصول
+  creator: string;
 }
 
 const initialProducts: Product[] = [
@@ -406,7 +406,6 @@ const MinimalButton: React.FC<{
       "bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50 focus:ring-red-500",
   };
 
-  // اگر href داده نشده باشه از button استفاده می‌کنیم تا accessibility حفظ شود
   if (href === "#") {
     return (
       <button
@@ -443,8 +442,15 @@ const ProductsList: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [productsList, setProductsList] = useState<Product[]>(initialProducts);
+
+  // State برای مودال نمایش JSON
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [modalJson, setModalJson] = useState<string>("");
+
+  // State برای مودال آپلود (Drag & Drop)
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState<boolean>(false);
+  const [dragActive, setDragActive] = useState<boolean>(false);
+
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const productsPerPage = 10;
@@ -469,7 +475,6 @@ const ProductsList: React.FC = () => {
   };
 
   const handleDeleteProduct = (id: string) => {
-    // 💡 (توصیه می‌شود در اینجا از یک مودال تایید استفاده شود)
     setProductsList(productsList.filter((product) => product.id !== id));
   };
 
@@ -498,7 +503,6 @@ const ProductsList: React.FC = () => {
     currentPage * productsPerPage
   );
 
-  // لیست تب‌ها
   const tabs = [
     "همه محصولات",
     "منتشر شده",
@@ -511,12 +515,9 @@ const ProductsList: React.FC = () => {
     "ناموجود",
   ];
 
-  // ===== Export Excel (xlsx / SheetJS) =====
+  // ===== Export Excel =====
   const exportToExcel = async () => {
-    // بارگذاری داینامیک تا در SSR مشکلی پیش نیاید
     const XLSX = await import("xlsx");
-
-    // ساخت آرایه‌ای که هدرها و ترتیب مشخصی دارد (فرمت خروجی)
     const exportData = productsList.map((p) => ({
       "شناسه": p.id,
       "نام محصول": p.name,
@@ -539,18 +540,12 @@ const ProductsList: React.FC = () => {
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Products");
 
-    // نام فایل شامل تاریخ می‌شود
     const filename = `products_export_${new Date().toISOString().slice(0, 10)}.xlsx`;
-
-    // در مرورگر از writeFile استفاده می‌کنیم
     XLSX.writeFile(workbook, filename);
   };
 
-  // ===== Upload Excel and convert to JSON =====
-  const onFilePicked = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files && e.target.files[0];
-    if (!file) return;
-
+  // ===== منطق اصلی پردازش فایل (مشترک بین Drag و Input) =====
+  const processFile = async (file: File) => {
     try {
       const XLSX = await import("xlsx");
       const arrayBuffer = await file.arrayBuffer();
@@ -558,27 +553,61 @@ const ProductsList: React.FC = () => {
       const firstSheetName = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[firstSheetName];
 
-      // sheet_to_json با defval برای نگهداری خانه‌های خالی
       const json: any[] = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
-
-      // برای نمایش ساده، JSON فرمت‌شده می‌سازیم.
       const pretty = JSON.stringify(json, null, 2);
+      
       setModalJson(pretty);
-      setIsModalOpen(true);
-
-      // اگر بخواهیم در آینده آن را برای POST آماده کنیم، می‌توانیم این json را به ساختار مورد نیاز API تبدیل کنیم.
-      // مثال تبدیل ساده (در صورت داشتن فیلدهای با همین نام‌ها):
-      // const apiPayload = json.map(row => ({ id: row['شناسه'], price: row['قیمت'], stock: row['موجودی'] }))
-      // فعلاً فقط نمایش می‌دهیم.
+      setIsUploadModalOpen(false); // بستن مودال آپلود
+      setIsModalOpen(true); // باز کردن مودال نمایش نتیجه
     } catch (err) {
       console.error(err);
       alert("خطا در خواندن فایل اکسل. مطمئن شوید فرمت صحیح است.");
-    } finally {
-      // مقدار دهی مجدد input برای امکان بارگذاری همان فایل دوباره
-      if (fileInputRef.current) fileInputRef.current.value = "";
     }
   };
 
+  // هندلر انتخاب فایل از طریق Input
+  const onFilePicked = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+
+    await processFile(file);
+
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  // ===== Drag and Drop Handlers =====
+  const handleDrag = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true);
+    } else if (e.type === "dragleave") {
+      setDragActive(false);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        const file = e.dataTransfer.files[0];
+        // بررسی ساده فرمت فایل
+        if (file.name.endsWith('.xlsx') || file.name.endsWith('.xls')) {
+            processFile(file);
+        } else {
+            alert("لطفا فقط فایل اکسل آپلود کنید.");
+        }
+    }
+  };
+
+  // باز کردن مودال آپلود به جای کلیک مستقیم روی اینپوت
+  const triggerUploadModal = () => {
+    setIsUploadModalOpen(true);
+  };
+
+  // تریگر کردن اینپوت مخفی داخل مودال
   const triggerFileSelect = () => {
     if (fileInputRef.current) fileInputRef.current.click();
   };
@@ -586,7 +615,6 @@ const ProductsList: React.FC = () => {
   return (
     <>
       <div className="bg-white dark:bg-[#0c1427] rounded-lg shadow-sm p-4 md:p-6">
-        {/* استایل جدید تب‌ها (زیرخطی) */}
         <div className="border-b border-gray-200 dark:border-gray-700">
           <nav className="-mb-px flex rtl:space-x-reverse space-x-6 overflow-x-auto gap-4">
             {tabs.map((label, index) => (
@@ -606,11 +634,8 @@ const ProductsList: React.FC = () => {
         </div>
 
         <div className="products-tab-content pt-5">
-          {/* هدر بازطراحی‌شده */}
           <div className="mb-5 md:flex items-center justify-between gap-4">
-            {/* بخش فیلترها در سمت راست */}
             <div className="flex items-center gap-2 flex-1 mb-4 md:mb-0">
-              {/* فرم جستجوی مینیمال */}
               <form className="relative flex-1 max-w-xs">
                 <label className="leading-none absolute ltr:left-3 rtl:right-3 text-gray-400 dark:text-gray-500 mt-px top-1/2 -translate-y-1/2">
                   <i className="material-symbols-outlined !text-[20px]">
@@ -626,7 +651,6 @@ const ProductsList: React.FC = () => {
                 />
               </form>
 
-              {/* دراپ‌داون دسته‌بندی */}
               <CategoryDropdown
                 categories={uniqueCategories}
                 selectedCategory={selectedCategory}
@@ -634,7 +658,6 @@ const ProductsList: React.FC = () => {
               />
             </div>
 
-            {/* بخش دکمه‌ها در سمت چپ */}
             <div className="flex items-center gap-3">
               <MinimalButton
                 href="/"
@@ -649,7 +672,6 @@ const ProductsList: React.FC = () => {
                 variant="primary"
               />
 
-              {/* ===== دکمه‌های جدید: Export / Upload ===== */}
               <MinimalButton
                 icon="file_download"
                 label="خروجی اکسل"
@@ -660,10 +682,11 @@ const ProductsList: React.FC = () => {
               <MinimalButton
                 icon="upload_file"
                 label="بارگذاری اکسل"
-                onClick={triggerFileSelect}
+                onClick={triggerUploadModal}
                 variant="primary"
               />
 
+              {/* اینپوت مخفی برای انتخاب فایل */}
               <input
                 ref={fileInputRef}
                 type="file"
@@ -674,7 +697,6 @@ const ProductsList: React.FC = () => {
             </div>
           </div>
 
-          {/* باقی کد جدول بدون تغییر (فقط کپی کردم) */}
           <div className="trezo-card-content">
             <div className="rounded-lg border border-gray-100 dark:border-[#172036] overflow-hidden">
               <div className="table-responsive overflow-x-auto">
@@ -845,26 +867,94 @@ const ProductsList: React.FC = () => {
         </div>
       </div>
 
-      {/* ===== مودال ساده برای نمایش JSON خروجی فایل آپلود شده ===== */}
+      {/* ===== مودال جدید: آپلود فایل (Drag & Drop) ===== */}
+      {isUploadModalOpen && (
+        <div className="fixed inset-0 z-[60] overflow-y-auto overflow-x-hidden flex justify-center items-center w-full h-full p-4">
+            {/* پس زمینه تیره */}
+            <div className="fixed inset-0 w-full h-full bg-black/40 transition-opacity" onClick={() => setIsUploadModalOpen(false)}></div>
+            
+            {/* محتوای مودال */}
+            <div className="relative w-full max-w-lg bg-white dark:bg-[#0c1427] rounded-lg shadow-lg transition-all">
+                <div className="flex items-center justify-between p-4 md:p-5 border-b border-gray-100 dark:border-[#172036]">
+                    <h3 className="text-lg font-semibold text-black dark:text-white">
+                        آپلود فایل اکسل محصولات
+                    </h3>
+                    <button 
+                        onClick={() => setIsUploadModalOpen(false)}
+                        className="text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                    >
+                        <i className="material-symbols-outlined">close</i>
+                    </button>
+                </div>
+
+                <div className="p-4 md:p-5">
+                    <div 
+                        onDragEnter={handleDrag}
+                        onDragLeave={handleDrag}
+                        onDragOver={handleDrag}
+                        onDrop={handleDrop}
+                        onClick={triggerFileSelect}
+                        className={`
+                            flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:bg-[#15203c] hover:bg-gray-100 dark:hover:bg-[#1b2742] transition-all
+                            ${dragActive ? "border-primary-500 bg-primary-50 dark:bg-primary-900/10" : "border-gray-300 dark:border-gray-600"}
+                        `}
+                    >
+                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                            <i className={`material-symbols-outlined !text-[48px] mb-4 ${dragActive ? "text-primary-500" : "text-gray-400"}`}>
+                                cloud_upload
+                            </i>
+                            <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                                <span className="font-semibold">برای آپلود کلیک کنید</span> یا فایل را اینجا رها کنید
+                            </p>
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                                فرمت‌های مجاز: XLSX, XLS
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="flex items-center justify-end p-4 md:p-5 border-t border-gray-100 dark:border-[#172036] gap-3">
+                    <button 
+                        onClick={() => setIsUploadModalOpen(false)}
+                        className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none dark:bg-[#15203c] dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700"
+                    >
+                        انصراف
+                    </button>
+                    <button 
+                        onClick={triggerFileSelect}
+                        className="px-4 py-2 text-sm font-medium text-white bg-primary-500 rounded-lg hover:bg-primary-600 focus:outline-none"
+                    >
+                        انتخاب فایل
+                    </button>
+                </div>
+            </div>
+        </div>
+      )}
+
+      {/* ===== مودال نمایش JSON استخراج شده ===== */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/50" onClick={() => setIsModalOpen(false)} />
-          <div className="relative max-w-3xl w-full mx-4 bg-white dark:bg-[#061226] rounded-lg shadow-lg overflow-auto max-h-[80vh] p-4">
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="text-lg font-medium text-gray-800 dark:text-white">JSON استخراج شده از اکسل</h3>
+          <div className="relative max-w-3xl w-full bg-white dark:bg-[#061226] rounded-lg shadow-lg overflow-hidden max-h-[80vh] flex flex-col">
+            <div className="flex items-center justify-between p-4 border-b dark:border-gray-700">
+              <h3 className="text-lg font-medium text-gray-800 dark:text-white">پیش‌نمایش داده‌ها</h3>
               <button onClick={() => setIsModalOpen(false)} className="text-gray-500 hover:text-gray-700 dark:text-gray-300">
-                بستن
+                <i className="material-symbols-outlined">close</i>
               </button>
             </div>
 
-            <pre className="whitespace-pre-wrap text-xs leading-relaxed text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-[#071427] p-3 rounded-md">{modalJson}</pre>
+            <div className="p-4 overflow-auto">
+               <pre className="whitespace-pre-wrap text-xs leading-relaxed text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-[#071427] p-3 rounded-md border border-gray-100 dark:border-gray-800">
+                 {modalJson}
+               </pre>
+            </div>
 
-            <div className="mt-3 flex justify-end">
+            <div className="p-4 border-t dark:border-gray-700 flex justify-end">
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="px-4 py-2 rounded-md bg-primary-500 text-white"
+                className="px-4 py-2 rounded-md bg-primary-500 text-white hover:bg-primary-600"
               >
-                تایید و بستن
+                تایید و ادامه
               </button>
             </div>
           </div>

@@ -1,10 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import Image from "next/image";
 
-// Define the structure of a contact
+// دریافت آدرس API از متغیر محیطی طبق دستور شما
+const API_URL = (process.env.NEXT_PUBLIC_GET_USERS_API_URL as string)
+
 interface Contact {
   id: string;
   name: string;
@@ -18,282 +20,91 @@ interface Contact {
 }
 
 const Contacts: React.FC = () => {
-  // Initialize state with an array of contacts
-  const [contacts, setContacts] = useState<Contact[]>([
-    {
-      id: "#854",
-      name: "Oliver Khan",
-      email: "oliver@trezo.com",
-      phone: "+1 555-123-4567",
-      lastContacted: "19 Jun 2024",
-      company: "ABC Corporation",
-      leadScore: 50,
-      status: "Active",
-      image: "/images/users/user6.jpg",
-    },
-    {
-      id: "#853",
-      name: "Carolyn Barnes",
-      email: "carolyn@trezo.com",
-      phone: "+1 555-987-6543",
-      lastContacted: "18 Jun 2024",
-      company: "XYZ Ltd",
-      leadScore: 35,
-      status: "Active",
-      image: "/images/users/user7.jpg",
-    },
-    {
-      id: "#852",
-      name: "Donna Miller",
-      email: "donna@trezo.com",
-      phone: "+1 555-456-7890",
-      lastContacted: "17 Jun 2024",
-      company: "Tech Solutions",
-      leadScore: 40,
-      status: "Deactive",
-      image: "/images/users/user8.jpg",
-    },
-    {
-      id: "#851",
-      name: "Rebecca Block",
-      email: "rebecca@trezo.com",
-      phone: "+1 555-658-4488",
-      lastContacted: "15 Jun 2024",
-      company: "Acma Industries",
-      leadScore: 27,
-      status: "Deactive",
-      image: "/images/users/user10.jpg",
-    },
-    {
-      id: "#850",
-      name: "Ramiro McCarty",
-      email: "ramiro@trezo.com",
-      phone: "+1 555-558-9966",
-      lastContacted: "14 Jun 2024",
-      company: "Synergy Ltd",
-      leadScore: 16,
-      status: "Active",
-      image: "/images/users/user11.jpg",
-    },
-    {
-      id: "#849",
-      name: "Robert Fairweather",
-      email: "robert@trezo.com",
-      phone: "+1 555-357-5888",
-      lastContacted: "13 Jun 2024",
-      company: "Summit Solutions",
-      leadScore: 38,
-      status: "Active",
-      image: "/images/users/user12.jpg",
-    },
-    {
-      id: "#848",
-      name: "Marcelino Haddock",
-      email: "marcelino@trezo.com",
-      phone: "+1 555-456-8877",
-      lastContacted: "12 Jun 2024",
-      company: "Strategies Ltd",
-      leadScore: 15,
-      status: "Active",
-      image: "/images/users/user13.jpg",
-    },
-    {
-      id: "#847",
-      name: "Thomas Wilson",
-      email: "thomas@trezo.com",
-      phone: "+1 555-622-4488",
-      lastContacted: "11 Jun 2024",
-      company: "Tech Enterprises",
-      leadScore: 41,
-      status: "Deactive",
-      image: "/images/users/user14.jpg",
-    },
-    {
-      id: "#846",
-      name: "Nathaniel Hulsey",
-      email: "nathaniel@trezo.com",
-      phone: "+1 555-225-4488",
-      lastContacted: "10 Jun 2024",
-      company: "Synetic Solutions",
-      leadScore: 29,
-      status: "Active",
-      image: "/images/users/user15.jpg",
-    },
-    {
-      id: "#845",
-      name: "Jasmine Cooper",
-      email: "jasmine@trezo.com",
-      phone: "+1 555-333-4444",
-      lastContacted: "9 Jun 2024",
-      company: "Horizon Inc",
-      leadScore: 23,
-      status: "Deactive",
-      image: "/images/users/user16.jpg",
-    },
-    {
-      id: "#844",
-      name: "David Johnson",
-      email: "david@trezo.com",
-      phone: "+1 555-111-2222",
-      lastContacted: "8 Jun 2024",
-      company: "NextGen Tech",
-      leadScore: 44,
-      status: "Active",
-      image: "/images/users/user17.jpg",
-    },
-    {
-      id: "#843",
-      name: "Sophia Williams",
-      email: "sophia@trezo.com",
-      phone: "+1 555-555-7777",
-      lastContacted: "7 Jun 2024",
-      company: "Future Vision",
-      leadScore: 37,
-      status: "Active",
-      image: "/images/users/user18.jpg",
-    },
-    {
-      id: "#842",
-      name: "Michael Brown",
-      email: "michael@trezo.com",
-      phone: "+1 555-888-9999",
-      lastContacted: "6 Jun 2024",
-      company: "Global Networks",
-      leadScore: 32,
-      status: "Deactive",
-      image: "/images/users/user19.jpg",
-    },
-    {
-      id: "#841",
-      name: "Emma Davis",
-      email: "emma@trezo.com",
-      phone: "+1 555-222-3333",
-      lastContacted: "5 Jun 2024",
-      company: "Dynamic Systems",
-      leadScore: 30,
-      status: "Active",
-      image: "/images/users/user20.jpg",
-    },
-    {
-      id: "#840",
-      name: "Liam Taylor",
-      email: "liam@trezo.com",
-      phone: "+1 555-444-5555",
-      lastContacted: "4 Jun 2024",
-      company: "Core Solutions",
-      leadScore: 28,
-      status: "Deactive",
-      image: "/images/users/user21.jpg",
-    },
-    {
-      id: "#839",
-      name: "Olivia Martinez",
-      email: "olivia@trezo.com",
-      phone: "+1 555-666-7777",
-      lastContacted: "3 Jun 2024",
-      company: "Alpha Innovations",
-      leadScore: 34,
-      status: "Active",
-      image: "/images/users/user22.jpg",
-    },
-    {
-      id: "#838",
-      name: "Aiden Clark",
-      email: "aiden@trezo.com",
-      phone: "+1 555-888-1111",
-      lastContacted: "2 Jun 2024",
-      company: "Skyline Ventures",
-      leadScore: 36,
-      status: "Active",
-      image: "/images/users/user23.jpg",
-    },
-    {
-      id: "#837",
-      name: "Ella Lewis",
-      email: "ella@trezo.com",
-      phone: "+1 555-999-2222",
-      lastContacted: "1 Jun 2024",
-      company: "Urban Analytics",
-      leadScore: 20,
-      status: "Deactive",
-      image: "/images/users/user24.jpg",
-    },
-    {
-      id: "#836",
-      name: "Lucas Harris",
-      email: "lucas@trezo.com",
-      phone: "+1 555-777-6666",
-      lastContacted: "31 May 2024",
-      company: "Eco Systems",
-      leadScore: 45,
-      status: "Active",
-      image: "/images/users/user25.jpg",
-    },
-    {
-      id: "#835",
-      name: "Mia Moore",
-      email: "mia@trezo.com",
-      phone: "+1 555-555-3333",
-      lastContacted: "30 May 2024",
-      company: "Nova Industries",
-      leadScore: 31,
-      status: "Deactive",
-      image: "/images/users/user26.jpg",
-    },
-  ]);
+  const [contacts, setContacts] = useState<Contact[]>([]);
+  const [loading, setLoading] = useState(true);
 
+  // دریافت اطلاعات از API
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        setLoading(true);
+        console.log("Fetching from:", API_URL); // جهت دیباگ در کنسول
+
+        const response = await fetch(API_URL, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                // اگر API نیاز به توکن دارد اینجا اضافه کنید
+            }
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        
+        // نگاشت داده‌ها و مدیریت مقادیر خالی
+        // فرض بر این است که data خود آرایه است. اگر داخل فیلدی مثل data.data بود تغییر دهید
+        const userArray = Array.isArray(data) ? data : [];
+        
+        const mappedContacts: Contact[] = userArray.map((user: any) => ({
+          id: user.id ? String(user.id) : `N/A-${Math.random()}`,
+          name: user.name || "اطلاعات دریافت نشد",
+          email: user.email || "اطلاعات دریافت نشد",
+          phone: user.phone || "اطلاعات دریافت نشد",
+          lastContacted: user.lastContacted || "اطلاعات دریافت نشد",
+          company: user.company || "اطلاعات دریافت نشد",
+          leadScore: user.leadScore || 0,
+          status: user.status || "Deactive", // وضعیت پیش‌فرض
+          image: user.image || "/images/users/user1.jpg", // عکس پیش‌فرض
+        }));
+
+        setContacts(mappedContacts);
+      } catch (error) {
+        console.error("Failed to fetch users:", error);
+        // ارور را در کنسول نمایش می‌دهیم اما UI کرش نمی‌کند
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+  // --- صفحه‌بندی و فیلترها ---
   const [currentPage, setCurrentPage] = useState(1);
   const [contactsPerPage] = useState(10);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedOption, setSelectedOption] = useState<string>("All");
 
-  // Handle search input change
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
-    setCurrentPage(1); // Reset to the first page when searching
+    setCurrentPage(1);
   };
 
-  // Handle status filter change
   const handleSelect = (option: string) => {
     setSelectedOption(option);
-    setCurrentPage(1); // Reset to the first page when filtering
+    setCurrentPage(1);
   };
 
-  // Filter contacts based on search query and status
   const filteredContacts = contacts.filter((contact) => {
-    const matchesSearchByName = contact.name
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase());
-    const matchesSearchById = contact.id
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase());
-    const matchesStatus =
-      selectedOption === "All" || contact.status === selectedOption;
+    const matchesSearchByName = contact.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearchById = contact.id.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesStatus = selectedOption === "All" || contact.status === selectedOption;
     return (matchesSearchByName || matchesSearchById) && matchesStatus;
   });
 
-  // Calculate the index range for the current page
   const indexOfLastContact = currentPage * contactsPerPage;
   const indexOfFirstContact = indexOfLastContact - contactsPerPage;
-  const currentContacts = filteredContacts.slice(
-    indexOfFirstContact,
-    indexOfLastContact
-  );
-
-  // Calculate total number of pages
+  const currentContacts = filteredContacts.slice(indexOfFirstContact, indexOfLastContact);
   const totalPages = Math.ceil(filteredContacts.length / contactsPerPage);
 
-  // Handle page change
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
 
-  // Handle contact deletion
-  const handleDeleteContact = (contactId: string) => {
-    setContacts(contacts.filter((contact) => contact.id !== contactId));
-  };
-
-  // Select checkbox
+  // --- انتخاب چک‌باکس‌ها ---
   const [selectedContacts, setSelectedContacts] = useState<string[]>([]);
   const [selectAll, setSelectAll] = useState(false);
 
@@ -309,16 +120,107 @@ const Contacts: React.FC = () => {
     if (selectAll) {
       setSelectedContacts([]);
     } else {
-      setSelectedContacts(contacts.map((contact) => contact.id));
+      setSelectedContacts(currentContacts.map((contact) => contact.id));
     }
     setSelectAll(!selectAll);
   };
 
+  // --- مودال ارسال پیام ---
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [messageType, setMessageType] = useState<"sms" | "email">("sms");
+  const [messageBody, setMessageBody] = useState("");
+
+  const openModal = () => {
+    if (selectedContacts.length > 0) setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setMessageBody("");
+  };
+
+  const handleSendMessage = () => {
+    // جمع‌آوری اطلاعات گیرندگان
+    const targets = contacts.filter(c => selectedContacts.includes(c.id));
+    
+    // ساخت آرایه مقصد (شماره یا ایمیل)
+    const recipients = targets.map(user => messageType === 'sms' ? user.phone : user.email)
+                              .filter(item => item !== "اطلاعات دریافت نشد");
+
+    // ساخت پلود نهایی
+    const apiPayload = {
+        method: messageType, // 'sms' or 'email'
+        recipients: recipients,
+        message: messageBody,
+        // برای تست اطلاعات کامل را هم لاگ میکنیم
+        _debugInfo: targets 
+    };
+
+    console.log("--- Ready to Send to API ---");
+    console.log(JSON.stringify(apiPayload, null, 2));
+    
+    alert("اطلاعات ارسال در کنسول لاگ شد (F12). منتظر پیاده‌سازی API ارسال.");
+    closeModal();
+  };
+
   return (
     <>
+      {/* --- Modal --- */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm p-4">
+          <div className="bg-white dark:bg-[#0c1427] w-full max-w-lg rounded-lg shadow-xl p-6 relative animate-fade-in-up">
+            <div className="flex justify-between items-center mb-4 border-b border-gray-100 dark:border-[#172036] pb-3">
+              <h3 className="text-lg font-bold text-black dark:text-white">ارسال پیام گروهی</h3>
+              <button onClick={closeModal} className="text-gray-500 hover:text-red-500">
+                <i className="material-symbols-outlined">close</i>
+              </button>
+            </div>
+
+            <div className="mb-4">
+               <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">گیرندگان ({selectedContacts.length}):</p>
+               <div className="flex flex-wrap gap-2 max-h-[60px] overflow-y-auto bg-gray-50 dark:bg-[#15203c] p-2 rounded">
+                 {contacts.filter(c => selectedContacts.includes(c.id)).map(c => (
+                    <span key={c.id} className="text-xs bg-primary-100 text-primary-700 px-2 py-1 rounded">{c.name}</span>
+                 ))}
+               </div>
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-black dark:text-white mb-2">روش ارسال:</label>
+              <div className="flex gap-4">
+                <label className="flex items-center cursor-pointer">
+                  <input type="radio" name="msgType" value="sms" checked={messageType === "sms"} onChange={() => setMessageType("sms")} className="mr-2"/>
+                  <span className="text-black dark:text-white">پیامک</span>
+                </label>
+                <label className="flex items-center cursor-pointer">
+                  <input type="radio" name="msgType" value="email" checked={messageType === "email"} onChange={() => setMessageType("email")} className="mr-2"/>
+                  <span className="text-black dark:text-white">ایمیل</span>
+                </label>
+              </div>
+            </div>
+
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-black dark:text-white mb-2">متن پیام:</label>
+              <textarea 
+                className="w-full p-3 border border-gray-200 dark:border-[#172036] rounded bg-transparent text-black dark:text-white focus:border-primary-500 outline-none h-32 resize-none"
+                placeholder="متن پیام خود را وارد کنید..."
+                value={messageBody}
+                onChange={(e) => setMessageBody(e.target.value)}
+              ></textarea>
+            </div>
+
+            <div className="flex justify-end gap-3">
+              <button onClick={closeModal} className="px-4 py-2 rounded bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-[#172036] dark:text-white">لغو</button>
+              <button onClick={handleSendMessage} disabled={!messageBody.trim()} className="px-4 py-2 rounded bg-primary-500 text-white hover:bg-primary-600 disabled:opacity-50">ارسال</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* --- Main Card --- */}
       <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
         <div className="trezo-card-header mb-[20px] md:mb-[25px] sm:flex items-center justify-between">
-          <div className="trezo-card-title">
+          <div className="trezo-card-title flex flex-col sm:flex-row items-start sm:items-center gap-4">
             <form className="relative sm:w-[265px]">
               <label className="leading-none absolute ltr:left-[13px] rtl:right-[13px] text-black dark:text-white mt-px top-1/2 -translate-y-1/2">
                 <i className="material-symbols-outlined !text-[20px]">search</i>
@@ -331,12 +233,18 @@ const Contacts: React.FC = () => {
                 className="bg-gray-50 border border-gray-50 h-[36px] text-xs rounded-md w-full block text-black pt-[11px] pb-[12px] ltr:pl-[38px] rtl:pr-[38px] ltr:pr-[13px] ltr:md:pr-[16px] rtl:pl-[13px] rtl:md:pl-[16px] placeholder:text-gray-500 outline-0 dark:bg-[#15203c] dark:text-white dark:border-[#15203c] dark:placeholder:text-gray-400"
               />
             </form>
+            {selectedContacts.length > 0 && (
+                <button onClick={openModal} className="flex items-center gap-2 bg-primary-500 text-white px-4 py-2 rounded text-sm hover:bg-primary-600 transition-all">
+                    <i className="material-symbols-outlined text-[18px]">send</i>
+                    ارسال به ({selectedContacts.length}) نفر
+                </button>
+            )}
           </div>
 
           <div className="trezo-card-subtitle mt-[15px] sm:mt-0">
             <Menu as="div" className="trezo-card-dropdown relative">
               <MenuButton className="trezo-card-dropdown-btn inline-block rounded-md border border-gray-100 py-[5px] md:py-[6.5px] px-[12px] md:px-[19px] transition-all hover:bg-gray-50 dark:border-[#172036] dark:hover:bg-[#0a0e19]">
-                <span className="inline-block relative ltr:pr-[17px] ltr:md:pr-[20px] rtl:pl-[17px] rtl:ml:pr-[20px]">
+                <span className="inline-block relative ltr:pr-[17px] ltr:md:pr-[20px] rtl:pl-[17px] rtl:ml:pr-[20px] text-black dark:text-white">
                   {selectedOption}
                   <i className="ri-arrow-down-s-line text-lg absolute ltr:-right-[3px] rtl:-left-[3px] top-1/2 -translate-y-1/2"></i>
                 </span>
@@ -394,7 +302,7 @@ const Contacts: React.FC = () => {
                     آخرین سفارش
                   </th>
                   <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] md:ltr:first:pl-[25px] md:rtl:first:pr-[25px] ltr:first:pr-0 rtl:first:pl-0 bg-primary-50 dark:bg-[#15203c] whitespace-nowrap">
-                     تعداد سفارشات
+                      تعداد سفارشات
                   </th>
                   <th className="font-medium ltr:text-left rtl:text-right px-[20px] py-[11px] md:ltr:first:pl-[25px] md:rtl:first:pr-[25px] ltr:first:pr-0 rtl:first:pl-0 bg-primary-50 dark:bg-[#15203c] whitespace-nowrap">
                     وضعیت
@@ -402,7 +310,12 @@ const Contacts: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="text-black dark:text-white">
-                {currentContacts.map((contact) => (
+                {loading ? (
+                    <tr><td colSpan={8} className="text-center py-10">در حال دریافت اطلاعات...</td></tr>
+                ) : currentContacts.length === 0 ? (
+                    <tr><td colSpan={8} className="text-center py-10">هیچ کاربری یافت نشد. </td></tr>
+                ) : (
+                currentContacts.map((contact) => (
                   <tr key={contact.id}>
                     <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[17px] md:ltr:first:pl-[25px] md:rtl:first:pr-[25px] ltr:first:pr-0 rtl:first:pl-0 border-b border-gray-100 dark:border-[#172036]">
                       <div className="form-check relative top-[2px]">
@@ -426,10 +339,12 @@ const Contacts: React.FC = () => {
                         <div className="w-[40px] rounded-full">
                           <Image
                             src={contact.image}
-                            className="inline-block rounded-full"
+                            className="inline-block rounded-full object-cover"
                             alt="user-image"
                             width={40}
                             height={40}
+                            // اضافه کردن unoptimized برای جلوگیری از ارور دامین عکس‌ها در Next.js
+                            unoptimized={true}
                           />
                         </div>
                         <div className="ltr:ml-[12px] rtl:mr-[12px]">
@@ -474,7 +389,8 @@ const Contacts: React.FC = () => {
                       </span>
                     </td>
                   </tr>
-                ))}
+                ))
+                )}
               </tbody>
             </table>
           </div>
@@ -499,7 +415,7 @@ const Contacts: React.FC = () => {
                 </button>
               </li>
 
-              {[...Array(totalPages)].map((_, index) => (
+              {totalPages > 0 && [...Array(totalPages)].map((_, index) => (
                 <li className="inline-block" key={index}>
                   <button
                     className={`w-[31px] h-[31px] block leading-[29px] relative text-center rounded-md border dark:border-[#172036] ${
@@ -518,7 +434,7 @@ const Contacts: React.FC = () => {
                 <button
                   type="button"
                   className="w-[31px] h-[31px] block leading-[29px] relative text-center rounded-md border border-gray-100 dark:border-[#172036] transition-all hover:bg-primary-500 hover:text-white hover:border-primary-500"
-                  disabled={currentPage === totalPages}
+                  disabled={currentPage === totalPages || totalPages === 0}
                   onClick={() => handlePageChange(currentPage + 1)}
                 >
                   <span className="opacity-0">0</span>
